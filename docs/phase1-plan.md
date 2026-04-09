@@ -46,7 +46,9 @@ english-phrase/
     │   ├── tsconfig.json
     │   ├── .env.example
     │   └── src/
-    │       └── index.ts
+    │       ├── index.ts
+    │       ├── escape.ts       # esc() を独立モジュールとして切り出す
+    │       └── escape.test.ts  # vitest によるテスト
     ├── api/
     │   └── package.json      # Phase 2スタブ
     └── web/
@@ -213,6 +215,53 @@ D1_DB_NAME=english-phrase-db
 
 ---
 
+## テスト
+
+`esc()` を `escape.ts` として独立モジュールに切り出し、`vitest` でテストする。
+
+`apps/sync/src/escape.test.ts`
+
+```typescript
+import { describe, expect, it } from "vitest";
+import { esc } from "./escape";
+
+describe("esc", () => {
+  it("通常の文字列をシングルクォートで囲む", () => {
+    expect(esc("hello")).toBe("'hello'");
+  });
+
+  it("シングルクォートを '' にエスケープする", () => {
+    expect(esc("it's")).toBe("'it''s'");
+  });
+
+  it("複数のシングルクォートをエスケープする", () => {
+    expect(esc("I'm Anton's friend")).toBe("'I''m Anton''s friend'");
+  });
+
+  it("null は NULL を返す", () => {
+    expect(esc(null)).toBe("NULL");
+  });
+
+  it("undefined は NULL を返す", () => {
+    expect(esc(undefined)).toBe("NULL");
+  });
+
+  it("空文字は '' を返す", () => {
+    expect(esc("")).toBe("''");
+  });
+});
+```
+
+実行：
+
+```bash
+pnpm --filter sync run test
+```
+
+`vitest` は `tsx` と同様に TypeScript をそのまま実行できるため、追加設定不要。
+
+---
+
 ## 依存パッケージ
 
 | パッケージ                  | 場所                | 用途                        |
@@ -224,6 +273,7 @@ D1_DB_NAME=english-phrase-db
 | `@notionhq/client`          | `apps/sync`         | Notion API                  |
 | `dotenv`                    | `apps/sync`         | .envの読み込み              |
 | `tsx`                       | `apps/sync` (dev)   | TypeScript直接実行          |
+| `vitest`                    | `apps/sync` (dev)   | テスト実行                  |
 | `typescript`, `@types/node` | `apps/sync` (dev)   | 型                          |
 
 ---
