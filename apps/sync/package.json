@@ -8,8 +8,7 @@
   },
   "dependencies": {
     "@english-phrase/db": "workspace:*",
-    "@notionhq/client": "^2.0.0",
-    "drizzle-orm": "^0.44.0"
+    "@notionhq/client": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

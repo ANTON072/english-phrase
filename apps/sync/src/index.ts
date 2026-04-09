@@ -1,4 +1,4 @@
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { Client } from "@notionhq/client";
@@ -52,8 +52,9 @@ function extractCreatedTime(page: PageObjectResponse, propName: string): string 
 // wrangler で D1 にSQLを実行するヘルパー
 // ---------------------------------------------------------------------------
 function wranglerQuery(sql: string): string {
-  return execSync(
-    `${WRANGLER} d1 execute ${D1_DB_NAME} --remote --json --command=${JSON.stringify(sql)}`,
+  return execFileSync(
+    WRANGLER,
+    ["d1", "execute", D1_DB_NAME!, "--remote", "--json", "--command", sql],
     { encoding: "utf-8" }
   );
 }
@@ -73,9 +74,9 @@ async function main() {
     if (rows.length > 0) {
       lastBoundary = rows[0].synced_at as string;
     }
-  } catch {
-    // sync_logs テーブルが存在しない場合や初回はスキップ
-    console.log("sync_logs が取得できませんでした。全件同期を実行します。");
+  } catch (err) {
+    // sync_logs テーブルが存在しない場合は初回同期として続行。それ以外のエラーはログ出力。
+    console.warn("[WARN] sync_logs の取得に失敗しました。全件同期を実行します。", err);
   }
 
   console.log(lastBoundary ? `前回境界: ${lastBoundary}` : "初回同期: 全件取得");
@@ -151,7 +152,7 @@ async function main() {
     return;
   }
 
-  // 4. SQLファイル生成（100件ずつバッチ）
+  // 4. SQLファイル生成（各 phrase ごとに 1 件の UPSERT 文を生成）
   const outputPath = path.resolve(__dirname, "../output.sql");
   const lines: string[] = [];
 
@@ -165,26 +166,29 @@ async function main() {
     );
   }
 
-  fs.writeFileSync(outputPath, lines.join("\n") + "\n", "utf-8");
-  console.log(`SQLファイル生成: ${phrases.length} 件`);
+  try {
+    fs.writeFileSync(outputPath, lines.join("\n") + "\n", "utf-8");
+    console.log(`SQLファイル生成: ${phrases.length} 件`);
 
-  // 5. D1 に適用
-  console.log("D1 にデータを書き込み中...");
-  execSync(
-    `${WRANGLER} d1 execute ${D1_DB_NAME} --remote --file=${outputPath}`,
-    { stdio: "inherit" }
-  );
+    // 5. D1 に適用
+    console.log("D1 にデータを書き込み中...");
+    execFileSync(
+      WRANGLER,
+      ["d1", "execute", D1_DB_NAME!, "--remote", `--file=${outputPath}`],
+      { stdio: "inherit" }
+    );
 
-  // 6. 成功後のみ sync_logs に境界時刻を記録
-  wranglerQuery(
-    `INSERT INTO sync_logs (synced_at) VALUES (${esc(maxLastEditedTime)});`
-  );
-  console.log(`sync_logs に境界時刻を記録: ${maxLastEditedTime}`);
+    // 6. 成功後のみ sync_logs に境界時刻を記録
+    wranglerQuery(
+      `INSERT INTO sync_logs (synced_at) VALUES (${esc(maxLastEditedTime)});`
+    );
+    console.log(`sync_logs に境界時刻を記録: ${maxLastEditedTime}`);
 
-  // 7. 一時ファイル削除
-  fs.unlinkSync(outputPath);
-
-  console.log("同期完了!");
+    console.log("同期完了!");
+  } finally {
+    // 7. 一時ファイル削除（失敗時も含めて必ず実行）
+    fs.rmSync(outputPath, { force: true });
+  }
 }
 
 main().catch((err) => {

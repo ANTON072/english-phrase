@@ -22,9 +22,6 @@ importers:
       '@notionhq/client':
         specifier: ^2.0.0
         version: 2.3.0
-      drizzle-orm:
-        specifier: ^0.44.0
-        version: 0.44.7(gel@2.2.0)
     devDependencies:
       '@types/node':
         specifier: ^22.0.0

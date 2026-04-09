@@ -4,6 +4,13 @@ import { defineConfig } from "drizzle-kit";
 
 config({ path: path.join(__dirname, "../../.env") });
 
+const missing = ["CF_ACCOUNT_ID", "CF_D1_DATABASE_ID", "CLOUDFLARE_API_TOKEN"].filter(
+  (key) => !process.env[key]?.trim()
+);
+if (missing.length > 0) {
+  throw new Error(`drizzle config: 環境変数が未設定です: ${missing.join(", ")}`);
+}
+
 export default defineConfig({
   dialect: "sqlite",
   driver: "d1-http",
