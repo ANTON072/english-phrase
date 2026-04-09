@@ -2,6 +2,26 @@
 
 英語フレーズ学習アプリ。Notion をデータソースとし、Cloudflare D1 に同期して提供する多フェーズプロジェクト。
 
+## 構成図
+
+```mermaid
+flowchart TD
+    Notion["Notion DB<br/>(データソース)"]
+    Sync["apps/sync<br/>(差分同期 CLI)"]
+    D1["Cloudflare D1<br/>(phrases テーブル)"]
+    API["Cloudflare Workers<br/>apps/api"]
+    Access["Cloudflare Access<br/>(認証ゲートウェイ)"]
+    Web["Cloudflare Workers<br/>Static Assets / apps/web"]
+    Browser["Browser"]
+
+    Notion -->|pnpm sync| Sync
+    Sync -->|UPSERT| D1
+    D1 -->|SELECT| API
+    Browser --> Access
+    Access --> Web
+    Web -->|JSON API| API
+```
+
 ## フェーズ構成
 
 | フェーズ | 内容                                          | 状態   |
