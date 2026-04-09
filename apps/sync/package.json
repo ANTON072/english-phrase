@@ -1,0 +1,19 @@
+{
+  "name": "sync",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "sync": "tsx --env-file=../../.env src/index.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@english-phrase/db": "workspace:*",
+    "@notionhq/client": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0"
+  }
+}

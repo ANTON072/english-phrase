@@ -1,0 +1,21 @@
+{
+  "name": "english-phrase",
+  "private": true,
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "sync": "pnpm --filter sync run sync",
+    "test": "pnpm --filter sync run test",
+    "db:generate": "pnpm --filter @english-phrase/db run generate",
+    "db:studio": "pnpm --filter @english-phrase/db run studio",
+    "db:migrate": "node --env-file=.env -e \"require('child_process').execSync('wrangler d1 execute ' + process.env.D1_DB_NAME + ' --remote --file=packages/db/migrations/0000_fluffy_impossible_man.sql', {stdio:'inherit'})\""
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp", "workerd"]
+  }
+}
