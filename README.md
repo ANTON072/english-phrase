@@ -4,11 +4,11 @@
 
 ## フェーズ構成
 
-| フェーズ | 内容 | 状態 |
-|---------|------|------|
-| Phase 1 | Notion → D1 差分同期 CLI | 完了 |
-| Phase 2 | Cloudflare Workers API (ランダムフレーズ取得) | 完了 |
-| Phase 3 | Web フロントエンド (学習 UI) | 未着手 |
+| フェーズ | 内容                                          | 状態   |
+| -------- | --------------------------------------------- | ------ |
+| Phase 1  | Notion → D1 差分同期 CLI                      | 完了   |
+| Phase 2  | Cloudflare Workers API (ランダムフレーズ取得) | 完了   |
+| Phase 3  | Web フロントエンド (学習 UI)                  | 未着手 |
 
 ## 技術スタック
 
@@ -58,14 +58,14 @@ pnpm db:migrate
 cp .env.example .env
 ```
 
-| 変数名 | 説明 |
-|--------|------|
-| `NOTION_API_KEY` | Notion インテグレーショントークン |
-| `NOTION_DATABASE_ID` | 同期元の Notion データベース ID |
-| `CLOUDFLARE_API_TOKEN` | Cloudflare API トークン |
-| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare アカウント ID |
-| `CF_D1_DATABASE_ID` | D1 データベース UUID |
-| `D1_DB_NAME` | D1 データベース名 |
+| 変数名                  | 説明                              |
+| ----------------------- | --------------------------------- |
+| `NOTION_API_KEY`        | Notion インテグレーショントークン |
+| `NOTION_DATABASE_ID`    | 同期元の Notion データベース ID   |
+| `CLOUDFLARE_API_TOKEN`  | Cloudflare API トークン           |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare アカウント ID          |
+| `CF_D1_DATABASE_ID`     | D1 データベース UUID              |
+| `D1_DB_NAME`            | D1 データベース名                 |
 
 ## 使い方
 
@@ -81,6 +81,12 @@ pnpm db:generate
 
 # Drizzle Studio (DB ビジュアル確認)
 pnpm db:studio
+
+# API ローカル開発サーバー起動
+pnpm api:dev
+
+# API 本番デプロイ
+pnpm api:deploy
 ```
 
 ## DB 確認
