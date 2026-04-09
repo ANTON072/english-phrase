@@ -69,14 +69,22 @@ async function main() {
     const result = JSON.parse(
       wranglerQuery("SELECT synced_at FROM sync_logs ORDER BY id DESC LIMIT 1;")
     );
-    // wrangler --json のレスポンス: [{ results: [...], ... }]
     const rows = result?.[0]?.results ?? [];
     if (rows.length > 0) {
       lastBoundary = rows[0].synced_at as string;
     }
-  } catch (err) {
-    // sync_logs テーブルが存在しない場合は初回同期として続行。それ以外のエラーはログ出力。
-    console.warn("[WARN] sync_logs の取得に失敗しました。全件同期を実行します。", err);
+  } catch (err: unknown) {
+    // "no such table" = テーブル未作成（初回）のみ続行。それ以外は障害として中断。
+    const output = String(
+      (err as Record<string, unknown>)?.stdout ??
+      (err as Error)?.message ??
+      err
+    );
+    if (/no such table/i.test(output)) {
+      console.log("sync_logs テーブルが未作成です。初回同期を実行します。");
+    } else {
+      throw new Error(`sync_logs の読み取りに失敗しました。処理を中断します。\n${output}`);
+    }
   }
 
   console.log(lastBoundary ? `前回境界: ${lastBoundary}` : "初回同期: 全件取得");
@@ -108,23 +116,33 @@ async function main() {
     for (const page of response.results) {
       if (page.object !== "page") continue;
       const p = page as PageObjectResponse;
-      if (p.archived) continue;
 
-      // last_edited_time の最大値を追跡
+      // archived を含むすべてのページで境界時刻を追跡する。
+      // archived のみ変更・単語空のみ変更でも境界を進めるために、フィルタより前に記録する。
       if (p.last_edited_time > maxLastEditedTime) {
         maxLastEditedTime = p.last_edited_time;
       }
 
+      if (p.archived) continue;
       pages.push(p);
     }
 
     cursor = response.has_more ? (response.next_cursor ?? undefined) : undefined;
   } while (cursor);
 
+  // 境界を sync_logs に記録するヘルパー（書き込みなしで終了するケースでも境界は前進させる）
+  const advanceBoundary = () => {
+    if (maxLastEditedTime !== (lastBoundary ?? "")) {
+      wranglerQuery(`INSERT INTO sync_logs (synced_at) VALUES (${esc(maxLastEditedTime)});`);
+      console.log(`sync_logs に境界時刻を記録: ${maxLastEditedTime}`);
+    }
+  };
+
   console.log(`取得件数: ${pages.length} 件`);
 
   if (pages.length === 0) {
     console.log("同期するデータがありません。");
+    advanceBoundary();
     return;
   }
 
@@ -148,7 +166,8 @@ async function main() {
   }
 
   if (phrases.length === 0) {
-    console.log("有効なデータがありません。");
+    console.log("有効なデータがありません（単語が空のページのみ）。");
+    advanceBoundary();
     return;
   }
 
@@ -179,10 +198,7 @@ async function main() {
     );
 
     // 6. 成功後のみ sync_logs に境界時刻を記録
-    wranglerQuery(
-      `INSERT INTO sync_logs (synced_at) VALUES (${esc(maxLastEditedTime)});`
-    );
-    console.log(`sync_logs に境界時刻を記録: ${maxLastEditedTime}`);
+    advanceBoundary();
 
     console.log("同期完了!");
   } finally {
