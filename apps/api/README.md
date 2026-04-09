@@ -4,8 +4,8 @@ Cloudflare Workers + Hono による英語フレーズ API。
 
 ## 事前準備
 
-`wrangler.toml` の `<CF_D1_DATABASE_ID>` を実際の値に書き換えてコミットする。  
-値は root の `.env` の `CF_D1_DATABASE_ID` を使用。
+`apps/api/wrangler.toml` には既に `database_id` が設定されているため、通常は書き換え不要。  
+利用する D1 データベースを変更したい場合のみ、`database_id` を対象環境の値に更新する。
 
 > `database_id` は識別子であり認証情報ではないため、public リポジトリへのコミットは問題ない。  
 > アクセス制御は `CLOUDFLARE_API_TOKEN` が担っており、こちらは `.env` で管理され git には含まれない。
@@ -13,6 +13,8 @@ Cloudflare Workers + Hono による英語フレーズ API。
 ## ローカル開発
 
 ### 1. ローカル D1 にスキーマを適用
+
+以下のコマンドは **`apps/api` ディレクトリで実行**する。
 
 **初回：**
 
@@ -75,10 +77,10 @@ routes = [
 
 ```bash
 # リポジトリルートから
-pnpm api:deploy --env production
+pnpm api:deploy
 
 # または apps/api から
-pnpm deploy --env production
+pnpm deploy
 ```
 
 ### 2. Cloudflare Access 設定（初回のみ）
