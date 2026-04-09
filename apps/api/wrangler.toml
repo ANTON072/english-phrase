@@ -11,5 +11,5 @@ database_id = "<CF_D1_DATABASE_ID>"
 # ドメインが決まったら以下を設定して `wrangler deploy --env production` でデプロイ
 [env.production]
 routes = [
-  { pattern = "<YOUR_DOMAIN>/api/*", zone_name = "<YOUR_DOMAIN>" }
+  { pattern = "english-phrase.work/api/*", zone_name = "english-phrase.work" }
 ]
