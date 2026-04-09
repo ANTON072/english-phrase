@@ -6,7 +6,7 @@ workers_dev = false
 [[d1_databases]]
 binding = "DB"
 database_name = "english-phrase-db"
-database_id = "<CF_D1_DATABASE_ID>"
+database_id = "30fa6909-5033-4842-adaa-1f0d40962f22"
 
 # ドメインが決まったら以下を設定して `wrangler deploy --env production` でデプロイ
 [env.production]
