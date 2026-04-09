@@ -4,12 +4,17 @@ Cloudflare Workers + Hono による英語フレーズ API。
 
 ## 事前準備
 
-`wrangler.toml` の `<CF_D1_DATABASE_ID>` を実際の値に書き換える。  
-値は root の `.env` に記載の `CF_D1_DATABASE_ID` を使用。
+`wrangler.toml` の `<CF_D1_DATABASE_ID>` を実際の値に書き換えてコミットする。  
+値は root の `.env` の `CF_D1_DATABASE_ID` を使用。
+
+> `database_id` は識別子であり認証情報ではないため、public リポジトリへのコミットは問題ない。  
+> アクセス制御は `CLOUDFLARE_API_TOKEN` が担っており、こちらは `.env` で管理され git には含まれない。
 
 ## ローカル開発
 
-### 1. ローカル D1 にスキーマを適用（初回のみ）
+### 1. ローカル D1 にスキーマを適用
+
+**初回：**
 
 ```bash
 npx wrangler d1 execute english-phrase-db \
@@ -17,6 +22,18 @@ npx wrangler d1 execute english-phrase-db \
   --file=../../packages/db/migrations/0000_fluffy_impossible_man.sql \
   --config=wrangler.toml
 ```
+
+**スキーマ変更時：**  
+`pnpm db:generate` で新しいマイグレーションファイルを生成後、そのファイルのみ適用する。
+
+```bash
+npx wrangler d1 execute english-phrase-db \
+  --local \
+  --file=../../packages/db/migrations/0001_xxxxx.sql \
+  --config=wrangler.toml
+```
+
+> `0000_...` を再実行するとテーブルが既に存在するためエラーになる。
 
 ### 2. 開発サーバー起動
 
