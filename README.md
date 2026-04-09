@@ -7,7 +7,7 @@
 | フェーズ | 内容 | 状態 |
 |---------|------|------|
 | Phase 1 | Notion → D1 差分同期 CLI | 完了 |
-| Phase 2 | Cloudflare Workers API (ランダムフレーズ取得) | 未着手 |
+| Phase 2 | Cloudflare Workers API (ランダムフレーズ取得) | 完了 |
 | Phase 3 | Web フロントエンド (学習 UI) | 未着手 |
 
 ## 技術スタック
@@ -30,7 +30,7 @@ english-phrase/
 │       └── migrations/    # drizzle-kit 自動生成 SQL
 ├── apps/
 │   ├── sync/             # Phase 1: Notion → D1 同期 CLI
-│   ├── api/              # Phase 2: Cloudflare Workers API (stub)
+│   ├── api/              # Phase 2: Cloudflare Workers API
 │   └── web/              # Phase 3: Web フロントエンド (stub)
 └── docs/                 # 設計ドキュメント
 ```
@@ -47,7 +47,7 @@ npx wrangler login
 npx wrangler d1 create english-phrase-db
 
 # マイグレーション適用
-npx wrangler d1 migrations apply english-phrase-db --remote
+pnpm db:migrate
 ```
 
 ### 環境変数
