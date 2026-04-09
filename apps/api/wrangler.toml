@@ -1,0 +1,15 @@
+name = "english-phrase-api"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+workers_dev = false
+
+[[d1_databases]]
+binding = "DB"
+database_name = "english-phrase-db"
+database_id = "<CF_D1_DATABASE_ID>"
+
+# ドメインが決まったら以下を設定して `wrangler deploy --env production` でデプロイ
+[env.production]
+routes = [
+  { pattern = "<YOUR_DOMAIN>/api/*", zone_name = "<YOUR_DOMAIN>" }
+]
