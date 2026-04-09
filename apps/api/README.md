@@ -90,10 +90,13 @@ pnpm deploy --env production
 
 ### 3. 本番動作確認
 
-Access 認証後に以下を実行:
+curl は Cloudflare Access のセッションを共有しないため使用不可。  
+ブラウザの DevTools コンソールで確認する。
 
-```bash
-curl -X POST https://yourdomain.com/api/v1/phrase
+```javascript
+// ブラウザで yourdomain.com にアクセスして Access 認証後、コンソールで実行
+const res = await fetch("/api/v1/phrase", { method: "POST" });
+console.log(await res.json());
 ```
 
 ---
