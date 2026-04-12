@@ -18,9 +18,13 @@
     "api:deploy": "pnpm --filter api run deploy",
     "web:dev": "pnpm --filter web run dev",
     "web:build": "pnpm --filter web run build",
-    "web:deploy": "pnpm --filter web run deploy"
+    "web:deploy": "pnpm --filter web run deploy",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --write ."
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.11",
     "concurrently": "^9.2.1",
     "wrangler": "^4.0.0"
   },

@@ -1,9 +1,9 @@
 import { execFileSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import type { NewPhrase } from "@english-phrase/db";
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints.js";
-import type { NewPhrase } from "@english-phrase/db";
 import { esc } from "./escape.js";
 
 // ---------------------------------------------------------------------------
@@ -76,9 +76,7 @@ async function main() {
   } catch (err: unknown) {
     // "no such table" = テーブル未作成（初回）のみ続行。それ以外は障害として中断。
     const output = String(
-      (err as Record<string, unknown>)?.stdout ??
-      (err as Error)?.message ??
-      err
+      (err as Record<string, unknown>)?.stdout ?? (err as Error)?.message ?? err
     );
     if (/no such table/i.test(output)) {
       console.log("sync_logs テーブルが未作成です。初回同期を実行します。");
@@ -186,16 +184,14 @@ async function main() {
   }
 
   try {
-    fs.writeFileSync(outputPath, lines.join("\n") + "\n", "utf-8");
+    fs.writeFileSync(outputPath, `${lines.join("\n")}\n`, "utf-8");
     console.log(`SQLファイル生成: ${phrases.length} 件`);
 
     // 5. D1 に適用
     console.log("D1 にデータを書き込み中...");
-    execFileSync(
-      WRANGLER,
-      ["d1", "execute", D1_DB_NAME!, "--remote", `--file=${outputPath}`],
-      { stdio: "inherit" }
-    );
+    execFileSync(WRANGLER, ["d1", "execute", D1_DB_NAME!, "--remote", `--file=${outputPath}`], {
+      stdio: "inherit",
+    });
 
     // 6. 成功後のみ sync_logs に境界時刻を記録
     advanceBoundary();
