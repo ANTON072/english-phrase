@@ -1,7 +1,7 @@
-import { Hono } from "hono";
-import { drizzle } from "drizzle-orm/d1";
-import { sql } from "drizzle-orm";
 import { phrases } from "@english-phrase/db";
+import { sql } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/d1";
+import { Hono } from "hono";
 
 type Bindings = { DB: D1Database };
 

@@ -75,9 +75,7 @@
       "indexes": {
         "phrases_notion_page_id_unique": {
           "name": "phrases_notion_page_id_unique",
-          "columns": [
-            "notion_page_id"
-          ],
+          "columns": ["notion_page_id"],
           "isUnique": true
         }
       },

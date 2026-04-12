@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "shadcn@latest",
+        "mcp"
+      ]
+    },
+    "cloudflare": {
+      "command": "npx",
+      "args": [
+        "@cloudflare/mcp-server-cloudflare@latest",
+        "run",
+        "a71492299bc65e7975ce355175c0c4ab"
+      ]
+    }
+  }
+}

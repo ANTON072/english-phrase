@@ -1,5 +1,5 @@
-import { config } from "dotenv";
 import path from "node:path";
+import { config } from "dotenv";
 import { defineConfig } from "drizzle-kit";
 
 config({ path: path.join(__dirname, "../../.env") });
