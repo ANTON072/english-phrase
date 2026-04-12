@@ -5,3 +5,8 @@ compatibility_date = "2025-04-01"
 directory = "./dist"
 not_found_handling = "single-page-application"
 
+[env.production]
+routes = [
+  { pattern = "english-phrase.work/*", zone_name = "english-phrase.work" }
+]
+
