@@ -76,6 +76,9 @@ apps/sync/output.sql
 # Wrangler local state
 .wrangler/
 
+# TanStack Router dev cache
+.tanstack/
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache

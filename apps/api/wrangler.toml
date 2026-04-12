@@ -3,6 +3,12 @@ main = "src/index.ts"
 compatibility_date = "2025-01-01"
 workers_dev = false
 
+# ローカル開発用 D1 バインディング (wrangler dev 時はローカル SQLite で動作)
+[[d1_databases]]
+binding = "DB"
+database_name = "english-phrase-db"
+database_id = "30fa6909-5033-4842-adaa-1f0d40962f22"
+
 [env.production]
 routes = [
   { pattern = "english-phrase.work/api/*", zone_name = "english-phrase.work" }

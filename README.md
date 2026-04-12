@@ -28,7 +28,7 @@ flowchart TD
 | -------- | --------------------------------------------- | ------ |
 | Phase 1  | Notion → D1 差分同期 CLI                      | 完了   |
 | Phase 2  | Cloudflare Workers API (ランダムフレーズ取得) | 完了   |
-| Phase 3  | Web フロントエンド (学習 UI)                  | 未着手 |
+| Phase 3  | Web フロントエンド (学習 UI)                  | 進行中 |
 
 ## 技術スタック
 
@@ -37,6 +37,7 @@ flowchart TD
 - **Database**: Cloudflare D1 (SQLite)
 - **ORM**: Drizzle ORM + drizzle-kit
 - **Notion**: @notionhq/client
+- **Frontend**: Vite + React 19 + TanStack Router / Query + shadcn/ui
 - **Testing**: Vitest
 - **Infra CLI**: Wrangler
 
@@ -87,7 +88,30 @@ cp .env.example .env
 | `CF_D1_DATABASE_ID`     | D1 データベース UUID              |
 | `D1_DB_NAME`            | D1 データベース名                 |
 
-## 使い方
+## 開発
+
+### ローカル開発サーバーの起動
+
+```bash
+pnpm dev
+```
+
+DB (Drizzle Studio)・API (wrangler dev)・Web (Vite) の3サーバーを同時に起動します。
+
+| サービス | URL |
+| -------- | --- |
+| Web フロントエンド | http://localhost:5173 |
+| API (wrangler dev) | http://localhost:8787 |
+| Drizzle Studio | https://local.drizzle.studio |
+
+> **Note**: Vite の開発サーバーは `/api/*` へのリクエストを自動的に `http://localhost:8787` にプロキシします。フロントエンドコードからは `fetch("/api/v1/...")` と書くだけで API に接続できます。
+
+> **Note**: `wrangler dev` はローカル SQLite で D1 をエミュレートします。初回のみ以下でローカル D1 にマイグレーションを適用してください。
+> ```bash
+> pnpm db:migrate:local
+> ```
+
+### その他のコマンド
 
 ```bash
 # Notion → D1 同期
@@ -99,14 +123,14 @@ pnpm test
 # スキーマ変更後にマイグレーション生成
 pnpm db:generate
 
-# Drizzle Studio (DB ビジュアル確認)
-pnpm db:studio
-
-# API ローカル開発サーバー起動
-pnpm api:dev
+# Web ビルド
+pnpm web:build
 
 # API 本番デプロイ
 pnpm api:deploy
+
+# Web 本番デプロイ
+pnpm web:deploy
 ```
 
 ## DB 確認
