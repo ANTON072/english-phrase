@@ -33,6 +33,17 @@
       "tailwindDirectives": true
     }
   },
+  "overrides": [
+    {
+      "includes": ["apps/web/src/routeTree.gen.ts"],
+      "linter": {
+        "enabled": false
+      },
+      "formatter": {
+        "enabled": false
+      }
+    }
+  ],
   "files": {
     "includes": ["**", "!**/*.gen.ts"],
     "ignore": ["**/dist/**", "**/.wrangler/**", "**/.tanstack/**"]
