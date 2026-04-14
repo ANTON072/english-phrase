@@ -1,10 +1,9 @@
-export type PhraseRecord = {
-  id: number;
-  word: string;
-  meaning: string | null;
-  partOfSpeech: string | null;
-  example: string | null;
-};
+import type { Phrase } from "@english-phrase/db";
+
+export type PhraseRecord = Pick<
+  Phrase,
+  "id" | "word" | "meaning" | "partOfSpeech" | "example"
+>;
 
 // Module-level state — cleared on page reload, which resets to home
 const session = {

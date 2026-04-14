@@ -5,20 +5,22 @@ import { Hono } from "hono";
 
 type Bindings = { DB: D1Database };
 
+const phraseSelect = {
+  id: phrases.id,
+  word: phrases.word,
+  meaning: phrases.meaning,
+  partOfSpeech: phrases.partOfSpeech,
+  example: phrases.example,
+  exampleTranslation: phrases.exampleTranslation,
+  notionCreatedAt: phrases.notionCreatedAt,
+} satisfies Record<keyof Phrase, unknown>;
+
 export const phraseRoute = new Hono<{ Bindings: Bindings }>();
 
 phraseRoute.post("/phrase", async (c) => {
   const db = drizzle(c.env.DB);
   const result = await db
-    .select({
-      id: phrases.id,
-      word: phrases.word,
-      meaning: phrases.meaning,
-      partOfSpeech: phrases.partOfSpeech,
-      example: phrases.example,
-      exampleTranslation: phrases.exampleTranslation,
-      notionCreatedAt: phrases.notionCreatedAt,
-    })
+    .select(phraseSelect)
     .from(phrases)
     .orderBy(sql`RANDOM()`)
     .limit(1);
