@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { API_ENDPOINT } from "@/constants";
 import { addReviewed, isStarted, type PhraseRecord } from "@/lib/session";
+import type { PageState, Phrase } from "./types";
 
 export const Route = createFileRoute("/quiz")({
   beforeLoad: () => {
@@ -13,18 +14,6 @@ export const Route = createFileRoute("/quiz")({
   },
   component: QuizPage,
 });
-
-type Phrase = {
-  id: number;
-  word: string;
-  meaning: string | null;
-  partOfSpeech: string | null;
-  example: string | null;
-  exampleTranslation: string | null;
-  notionCreatedAt: string | null;
-};
-
-type PageState = "loading" | "question" | "answer";
 
 async function fetchPhrase(): Promise<Phrase> {
   const res = await fetch(API_ENDPOINT, { method: "POST" });

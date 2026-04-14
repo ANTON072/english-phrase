@@ -18,4 +18,15 @@ export const syncLogs = sqliteTable("sync_logs", {
   syncedAt: text("synced_at").notNull(),
 });
 
+export type Phrase = Pick<
+  typeof phrases.$inferSelect,
+  | "id"
+  | "word"
+  | "meaning"
+  | "partOfSpeech"
+  | "example"
+  | "exampleTranslation"
+  | "notionCreatedAt"
+>;
+
 export type NewPhrase = typeof phrases.$inferInsert;
