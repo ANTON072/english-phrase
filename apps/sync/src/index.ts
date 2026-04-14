@@ -20,6 +20,14 @@ if (!D1_DB_NAME) throw new Error("D1_DB_NAME が未設定です");
 // wrangler バイナリのパス（ルートの node_modules に配置）
 const WRANGLER = path.resolve(__dirname, "../../../node_modules/.bin/wrangler");
 
+// LOCAL=true のときローカル D1 をターゲットにする
+const IS_LOCAL = process.env.LOCAL === "true";
+const D1_TARGET = IS_LOCAL ? "--local" : "--remote";
+// ローカル時は apps/api の wrangler.toml を参照して D1 の場所を解決する
+const WRANGLER_CONFIG = IS_LOCAL
+  ? ["--config", path.resolve(__dirname, "../../../apps/api/wrangler.toml")]
+  : [];
+
 // ---------------------------------------------------------------------------
 // Notionプロパティ抽出ヘルパー
 // ---------------------------------------------------------------------------
@@ -54,7 +62,7 @@ function extractCreatedTime(page: PageObjectResponse, propName: string): string 
 function wranglerQuery(sql: string): string {
   return execFileSync(
     WRANGLER,
-    ["d1", "execute", D1_DB_NAME!, "--remote", "--json", "--command", sql],
+    ["d1", "execute", D1_DB_NAME!, D1_TARGET, ...WRANGLER_CONFIG, "--json", "--command", sql],
     { encoding: "utf-8" }
   );
 }
@@ -189,7 +197,7 @@ async function main() {
 
     // 5. D1 に適用
     console.log("D1 にデータを書き込み中...");
-    execFileSync(WRANGLER, ["d1", "execute", D1_DB_NAME!, "--remote", `--file=${outputPath}`], {
+    execFileSync(WRANGLER, ["d1", "execute", D1_DB_NAME!, D1_TARGET, ...WRANGLER_CONFIG, `--file=${outputPath}`], {
       stdio: "inherit",
     });
 
