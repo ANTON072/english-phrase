@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { API_ENDPOINT } from "@/constants";
-import type { Phrase } from "./types";
+import type { Phrase } from "@/types";
 
 async function fetchPhrase(): Promise<Phrase> {
   const res = await fetch(API_ENDPOINT, { method: "POST" });

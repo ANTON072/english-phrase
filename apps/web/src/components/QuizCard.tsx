@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { PageState, Phrase } from "@/routes/types";
+import type { PageState, Phrase } from "@/types";
 
 type Props = {
   phrase: Phrase;

@@ -4,7 +4,7 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { QuizCard } from "@/components/QuizCard";
 import { addReviewed, isStarted, type PhraseRecord } from "@/lib/session";
-import type { PageState } from "./types";
+import type { PageState } from "@/types";
 import { usePhrase } from "@/hooks/usePhrase";
 
 export const Route = createFileRoute("/quiz")({
