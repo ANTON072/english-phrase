@@ -197,9 +197,13 @@ async function main() {
 
     // 5. D1 に適用
     console.log("D1 にデータを書き込み中...");
-    execFileSync(WRANGLER, ["d1", "execute", D1_DB_NAME!, D1_TARGET, ...WRANGLER_CONFIG, `--file=${outputPath}`], {
-      stdio: "inherit",
-    });
+    execFileSync(
+      WRANGLER,
+      ["d1", "execute", D1_DB_NAME!, D1_TARGET, ...WRANGLER_CONFIG, `--file=${outputPath}`],
+      {
+        stdio: "inherit",
+      }
+    );
 
     // 6. 成功後のみ sync_logs に境界時刻を記録
     advanceBoundary();

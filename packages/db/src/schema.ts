@@ -20,13 +20,7 @@ export const syncLogs = sqliteTable("sync_logs", {
 
 export type Phrase = Pick<
   typeof phrases.$inferSelect,
-  | "id"
-  | "word"
-  | "meaning"
-  | "partOfSpeech"
-  | "example"
-  | "exampleTranslation"
-  | "notionCreatedAt"
+  "id" | "word" | "meaning" | "partOfSpeech" | "example" | "exampleTranslation" | "notionCreatedAt"
 >;
 
 export type NewPhrase = typeof phrases.$inferInsert;

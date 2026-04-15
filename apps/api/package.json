@@ -8,11 +8,11 @@
   },
   "dependencies": {
     "@english-phrase/db": "workspace:*",
-    "drizzle-orm": "^0.44.0",
+    "drizzle-orm": "catalog:",
     "hono": "^4.0.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "catalog:"
   }
 }

@@ -27,7 +27,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.11",
     "concurrently": "^9.2.1",
-    "wrangler": "^4.0.0"
+    "wrangler": "catalog:"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
