@@ -23,8 +23,9 @@ function QuizPage() {
   const [count, setCount] = useState(0);
 
   function handleAnswer() {
-    setPageState("answer");
+    if (pageState !== "question") return;
     if (phrase) {
+      setPageState("answer");
       const record: PhraseRecord = {
         id: phrase.id,
         word: phrase.word,

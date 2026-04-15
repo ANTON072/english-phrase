@@ -35,9 +35,9 @@ function ResultPage() {
             No words reviewed yet.
           </p>
         ) : (
-          reviewed.map((phrase, index) => (
+          reviewed.map((phrase) => (
             <div
-              key={`${phrase.id}-${index}`}
+              key={phrase.reviewId}
               className="flex flex-col gap-1 border-b border-border py-4"
             >
               <div className="flex items-center gap-2">
