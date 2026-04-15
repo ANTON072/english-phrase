@@ -9,6 +9,7 @@
     "dev": "concurrently --kill-others -n DB,API,WEB -c green,cyan,magenta \"pnpm db:studio\" \"pnpm api:dev\" \"pnpm web:dev\"",
     "release": "concurrently -n API,WEB -c cyan,magenta \"pnpm api:deploy\" \"pnpm web:deploy\"",
     "sync": "pnpm --filter sync run sync",
+    "sync:local": "LOCAL=true pnpm --filter sync run sync",
     "test": "pnpm --filter sync run test",
     "db:generate": "pnpm --filter @english-phrase/db run generate",
     "db:studio": "pnpm --filter @english-phrase/db run studio",

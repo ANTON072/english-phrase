@@ -34,7 +34,6 @@
     }
   },
   "files": {
-    "includes": ["**", "!**/*.gen.ts"],
-    "ignore": ["**/dist/**", "**/.wrangler/**", "**/.tanstack/**"]
+    "includes": ["**", "!**/*.gen.ts", "!**/dist/**", "!**/.wrangler/**", "!**/.tanstack/**"]
   }
 }
