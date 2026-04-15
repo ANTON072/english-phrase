@@ -9,6 +9,11 @@ binding = "DB"
 database_name = "english-phrase-db"
 database_id = "30fa6909-5033-4842-adaa-1f0d40962f22"
 
+ # 音声mp3キャッシュ用 R2 バインディング
+[[r2_buckets]]
+binding = "VOICE_CACHE"
+bucket_name = "english-phrase-voice-cache"
+
 [env.production]
 routes = [
   { pattern = "english-phrase.work/api/*", zone_name = "english-phrase.work" }
@@ -18,3 +23,7 @@ routes = [
 binding = "DB"
 database_name = "english-phrase-db"
 database_id = "30fa6909-5033-4842-adaa-1f0d40962f22"
+
+[[env.production.r2_buckets]]
+binding = "VOICE_CACHE"
+bucket_name = "english-phrase-voice-cache"
