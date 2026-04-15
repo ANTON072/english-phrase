@@ -15,6 +15,15 @@ pnpm web:dev
 - アプリ: http://localhost:5173
 - `/api/*` へのリクエストは自動的に `http://localhost:8787`（wrangler dev）にプロキシされる
 
+### MSW (モックモード)
+
+実 API なしで UI を確認したい場合は `VITE_ENABLE_MSW=true` を付けて起動する。
+
+```bash
+VITE_ENABLE_MSW=true pnpm web:dev   # MSW が /api/v1/phrase をインターセプト
+pnpm web:dev                         # 実 API (localhost:8787) に proxy
+```
+
 ## shadcn コンポーネントの追加
 
 ```bash
