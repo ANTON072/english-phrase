@@ -2,6 +2,7 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getReviewed, isStarted } from "@/lib/session";
+import { parsePartOfSpeech } from "@/lib/utils";
 
 export const Route = createFileRoute("/result")({
   beforeLoad: () => {
@@ -37,11 +38,11 @@ function ResultPage() {
             <div key={phrase.reviewId} className="flex flex-col gap-1 border-b border-border py-4">
               <div className="flex items-center gap-2">
                 <span className="text-lg font-semibold">{phrase.word}</span>
-                {phrase.partOfSpeech && (
-                  <Badge variant="secondary" className="text-xs">
-                    {phrase.partOfSpeech}
+                {parsePartOfSpeech(phrase.partOfSpeech).map((pos) => (
+                  <Badge key={pos} variant="secondary" className="text-xs">
+                    {pos}
                   </Badge>
-                )}
+                ))}
               </div>
               {phrase.meaning && <p className="text-sm text-muted-foreground">{phrase.meaning}</p>}
             </div>
