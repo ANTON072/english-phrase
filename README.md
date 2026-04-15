@@ -1,6 +1,8 @@
 # english-phrase
 
-英語フレーズ学習アプリ。Notion をデータソースとし、Cloudflare D1 に同期して提供する多フェーズプロジェクト。
+英語フレーズ学習アプリ。Notion をデータソースとし、Cloudflare D1 に同期して提供する。
+
+https://github.com/user-attachments/assets/d2bb5edd-ffb2-4cea-841a-039986849be5
 
 ## 構成図
 
