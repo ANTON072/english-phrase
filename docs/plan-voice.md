@@ -2,15 +2,17 @@
 
 ## Phase 0: 事前準備
 
+状態: 完了
+
 目的: 実装に入れる状態を作る。
 
-やること:
+やったこと:
 
-- OpenAI APIキーを用意する。
-- OpenAI側で月額上限を設定する。
-- Cloudflare R2 bucket `english-phrase-voice-cache` を作成する。
-- `apps/api` のWorkerにR2 binding `VOICE_CACHE` を追加する。
-- Worker Secretに `OPENAI_API_KEY` を登録する。
+- OpenAI APIキーを用意した。
+- OpenAI側で月額上限を設定した。
+- Cloudflare R2 bucket `english-phrase-voice-cache` を作成した。
+- `apps/api` のWorkerにR2 binding `VOICE_CACHE` を追加した。
+- Worker Secretに `OPENAI_API_KEY` を登録した。
 
 完了条件:
 
