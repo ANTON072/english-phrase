@@ -10,9 +10,7 @@ export function QuestionCard({ phrase, onAnswer }: Props) {
   return (
     <>
       <div className="flex flex-col items-center gap-6 text-center">
-        <h2 className="text-5xl font-bold tracking-tight text-foreground">
-          {phrase.word}
-        </h2>
+        <h2 className="text-5xl font-bold tracking-tight text-foreground">{phrase.word}</h2>
       </div>
 
       <div className="flex w-full flex-col gap-3">

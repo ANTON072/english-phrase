@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "dotenv": "^16.0.0",
-    "drizzle-orm": "^0.44.0"
+    "drizzle-orm": "catalog:"
   },
   "devDependencies": {
     "drizzle-kit": "^0.30.0",
-    "typescript": "^5.0.0"
+    "typescript": "catalog:"
   }
 }
