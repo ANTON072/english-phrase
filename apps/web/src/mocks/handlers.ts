@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { HttpResponse, http } from "msw";
 import { API_ENDPOINT } from "@/constants";
 import type { Phrase } from "@/types";
 
