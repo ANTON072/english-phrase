@@ -1,5 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
+import { Toaster } from "sonner";
 
 interface RouterContext {
   queryClient: QueryClient;
@@ -13,6 +14,7 @@ function RootLayout() {
   return (
     <div className="min-h-screen bg-background font-sans antialiased">
       <Outlet />
+      <Toaster position="bottom-center" />
     </div>
   );
 }
