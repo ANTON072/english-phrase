@@ -1,10 +1,10 @@
+import type { PhraseResponse } from "@english-phrase/types";
 import { Loader2, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useVoice } from "@/hooks/useVoice";
-import type { Phrase } from "@/types";
 
 type Props = {
-  phrase: Phrase;
+  phrase: PhraseResponse;
   onAnswer: () => void;
 };
 

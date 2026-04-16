@@ -10,7 +10,7 @@
     "deploy": "pnpm run build && wrangler deploy --env production"
   },
   "dependencies": {
-    "@english-phrase/db": "workspace:*",
+    "@english-phrase/types": "workspace:*",
     "@tanstack/react-query": "^5.74.4",
     "@tanstack/react-router": "^1.114.3",
     "class-variance-authority": "^0.7.1",

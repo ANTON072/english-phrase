@@ -1,8 +1,8 @@
+import type { PhraseResponse } from "@english-phrase/types";
 import { HttpResponse, http } from "msw";
 import { API_ENDPOINT } from "@/constants";
-import type { Phrase } from "@/types";
 
-const mockPhrases: Phrase[] = [
+const mockPhrases: PhraseResponse[] = [
   {
     id: 293,
     word: "clerk",
