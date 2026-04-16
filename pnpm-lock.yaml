@@ -38,6 +38,9 @@ importers:
       '@english-phrase/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@english-phrase/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       drizzle-orm:
         specifier: 'catalog:'
         version: 0.44.7(@cloudflare/workers-types@4.20260409.1)(gel@2.2.0)
@@ -51,6 +54,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/node@22.19.17)(jiti@2.6.1)(lightningcss@1.32.0)(msw@2.13.3(@types/node@22.19.17)(typescript@5.9.3))(tsx@4.21.0)
 
   apps/sync:
     dependencies:
@@ -156,6 +162,12 @@ importers:
       drizzle-kit:
         specifier: ^0.30.0
         version: 0.30.6
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  packages/types:
+    devDependencies:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3

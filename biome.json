@@ -34,6 +34,13 @@
     }
   },
   "files": {
-    "includes": ["**", "!**/*.gen.ts", "!**/dist", "!**/.wrangler", "!**/.tanstack", "!**/mockServiceWorker.js"]
+    "includes": [
+      "**",
+      "!**/*.gen.ts",
+      "!**/dist",
+      "!**/.wrangler",
+      "!**/.tanstack",
+      "!**/mockServiceWorker.js"
+    ]
   }
 }
