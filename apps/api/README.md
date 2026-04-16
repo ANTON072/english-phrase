@@ -52,10 +52,16 @@ pnpm dev
 ### 3. 動作確認
 
 ```bash
+# ランダムフレーズ取得
 curl -X POST http://localhost:8787/api/v1/phrase
+
+# 音声 MP3 取得 (phraseId と text を指定)
+curl -X POST http://localhost:8787/api/v1/speech \
+  -H "Content-Type: application/json" \
+  -d '{"phraseId": 1, "text": "serendipity"}'
 ```
 
-ランダムなフレーズ JSON が返ればOK。
+フレーズ JSON / MP3 バイナリが返ればOK。
 
 ---
 
@@ -103,9 +109,11 @@ console.log(await res.json());
 
 ---
 
-## レスポンス仕様
+## エンドポイント仕様
 
-`POST /api/v1/phrase` — ランダムに 1 件返す
+### `POST /api/v1/phrase` — ランダムフレーズ取得
+
+D1 から 1 件ランダムに返す。
 
 ```json
 {
@@ -117,4 +125,29 @@ console.log(await res.json());
   "exampleTranslation": "純粋な思いがけない幸運だった。",
   "notionCreatedAt": "2024-01-01"
 }
+```
+
+### `POST /api/v1/speech` — 音声 MP3 生成・取得
+
+リクエスト body:
+
+```json
+{ "phraseId": 1, "text": "serendipity" }
+```
+
+- R2 にキャッシュ済みの場合はそのまま返す
+- 未キャッシュの場合は OpenAI TTS API (`gpt-4o-mini-tts`, voice: `coral`) で生成し R2 に保存してから返す
+- レスポンスは `Content-Type: audio/mpeg` の MP3 バイナリ
+
+#### 前提: シークレットの設定
+
+```bash
+# OPENAI_API_KEY を Cloudflare Workers のシークレットとして登録
+npx wrangler secret put OPENAI_API_KEY
+```
+
+R2 バケット `english-phrase-voice-cache` は `wrangler.toml` でバインド済み。初回デプロイ前に Cloudflare ダッシュボードまたは以下で作成する。
+
+```bash
+npx wrangler r2 bucket create english-phrase-voice-cache
 ```
