@@ -44,6 +44,9 @@ export async function getOrGenerate(
   if (!res?.ok) return null;
 
   const mp3 = await res.arrayBuffer();
-  await cache.put(key, mp3, { httpMetadata: { contentType: "audio/mpeg" } });
+  // R2はキャッシュなので保存失敗は握りつぶし、生成済みのmp3はそのまま返す。
+  await cache.put(key, mp3, { httpMetadata: { contentType: "audio/mpeg" } }).catch((err) => {
+    console.error("[speech] R2 cache.put failed:", err);
+  });
   return mp3;
 }
