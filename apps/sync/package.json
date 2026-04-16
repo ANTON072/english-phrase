@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "sync": "tsx --env-file=../../.env src/index.ts",
+    "sync:ci": "tsx src/index.ts",
     "test": "vitest run"
   },
   "dependencies": {

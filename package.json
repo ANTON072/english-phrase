@@ -10,6 +10,7 @@
     "release": "concurrently -n API,WEB -c cyan,magenta \"pnpm api:deploy\" \"pnpm web:deploy\"",
     "sync": "pnpm --filter sync run sync",
     "sync:local": "LOCAL=true pnpm --filter sync run sync",
+    "sync:ci": "pnpm --filter sync run sync:ci",
     "test": "pnpm --filter sync run test",
     "db:generate": "pnpm --filter @english-phrase/db run generate",
     "db:studio": "pnpm --filter @english-phrase/db run studio",

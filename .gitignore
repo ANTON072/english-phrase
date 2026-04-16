@@ -160,7 +160,8 @@ vite.config.ts.timestamp-*
 __MACOSX/
 .AppleDouble
 .LSOverride
-Icon[]
+Icon[
+]
 
 # Thumbnails
 ._*
@@ -191,3 +192,4 @@ Temporary Items
 
 # Built Visual Studio Code Extensions
 *.vsix
+.secrets
