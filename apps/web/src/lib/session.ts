@@ -1,6 +1,6 @@
-import type { Phrase } from "@english-phrase/db";
+import type { PhraseResponse } from "@english-phrase/types";
 
-export type PhraseRecord = Pick<Phrase, "id" | "word" | "meaning" | "partOfSpeech" | "example">;
+export type PhraseRecord = Pick<PhraseResponse, "id" | "word" | "meaning" | "partOfSpeech" | "example">;
 
 // 結果画面での一覧表示用。同一フレーズが複数回登場しても key が衝突しないよう reviewId を付与する
 export type ReviewedRecord = PhraseRecord & { reviewId: string };

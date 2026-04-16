@@ -1,10 +1,10 @@
+import type { PhraseResponse } from "@english-phrase/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { parsePartOfSpeech } from "@/lib/utils";
-import type { Phrase } from "@/types";
 
 type Props = {
-  phrase: Phrase;
+  phrase: PhraseResponse;
   onNext: () => void;
   onFinish: () => void;
 };

@@ -1,15 +1,15 @@
+import type { PhraseResponse } from "@english-phrase/types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { API_ENDPOINT } from "@/constants";
-import type { Phrase } from "@/types";
 
-async function fetchPhrase(signal: AbortSignal): Promise<Phrase> {
+async function fetchPhrase(signal: AbortSignal): Promise<PhraseResponse> {
   const res = await fetch(API_ENDPOINT, { method: "POST", signal });
   if (!res.ok) throw new Error("Failed to fetch phrase");
-  return res.json() as Promise<Phrase>;
+  return res.json() as Promise<PhraseResponse>;
 }
 
 export function usePhrase() {
-  const [phrase, setPhrase] = useState<Phrase | null>(null);
+  const [phrase, setPhrase] = useState<PhraseResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const prevIdRef = useRef<number | null>(null);

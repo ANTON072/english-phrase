@@ -1,9 +1,10 @@
+import type { PhraseResponse } from "@english-phrase/types";
 import { AnswerCard } from "@/components/AnswerCard";
 import { QuestionCard } from "@/components/QuestionCard";
-import type { PageState, Phrase } from "@/types";
+import type { PageState } from "@/types";
 
 type Props = {
-  phrase: Phrase;
+  phrase: PhraseResponse;
   pageState: PageState;
   onAnswer: () => void;
   onNext: () => void;

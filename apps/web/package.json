@@ -10,7 +10,7 @@
     "deploy": "pnpm run build && wrangler deploy --env production"
   },
   "dependencies": {
-    "@english-phrase/db": "workspace:*",
+    "@english-phrase/types": "workspace:*",
     "@tanstack/react-query": "^5.74.4",
     "@tanstack/react-router": "^1.114.3",
     "class-variance-authority": "^0.7.1",
@@ -19,6 +19,7 @@
     "radix-ui": "^1.4.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.2.0"
   },
   "devDependencies": {
