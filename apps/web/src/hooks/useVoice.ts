@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { SPEECH_ENDPOINT } from "@/constants";
 
@@ -10,7 +10,11 @@ const speechCache = new Map<number, string>();
 
 // API から音声の Blob URL を取得する。キャッシュがあればそちらを返す。
 // 取得した URL は revoke しないことでキャッシュを有効に保つ。
-async function fetchSpeechUrl(phraseId: number, word: string): Promise<string> {
+async function fetchSpeechUrl(
+  phraseId: number,
+  word: string,
+  signal: AbortSignal
+): Promise<string> {
   if (speechCache.has(phraseId)) {
     return speechCache.get(phraseId)!;
   }
@@ -18,6 +22,7 @@ async function fetchSpeechUrl(phraseId: number, word: string): Promise<string> {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phraseId, text: word }),
+    signal,
   });
   if (!res.ok) throw new Error("音声の取得に失敗しました");
   const blob = await res.blob();
@@ -29,38 +34,68 @@ async function fetchSpeechUrl(phraseId: number, word: string): Promise<string> {
 export function useVoice(phraseId: number, word: string) {
   const [voiceState, setVoiceState] = useState<VoiceState>("idle");
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      // アンマウント時: フェッチ中断 & 再生停止
+      abortRef.current?.abort();
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
 
   const play = async () => {
     // 再生中・ロード中は二重実行しない
     if (voiceState !== "idle") return;
     setVoiceState("loading");
 
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     let url: string;
     try {
-      url = await fetchSpeechUrl(phraseId, word);
-    } catch {
+      url = await fetchSpeechUrl(phraseId, word, controller.signal);
+    } catch (err) {
+      // アンマウント済み、または中断された場合は何もしない
+      if (!mountedRef.current || (err instanceof Error && err.name === "AbortError")) return;
       setVoiceState("idle");
       toast.error("音声の取得に失敗しました");
       return;
     }
 
+    // フェッチ完了後にアンマウントされていた場合は中断
+    if (!mountedRef.current) return;
+
     const audio = new Audio(url);
     audioRef.current = audio;
 
-    const cleanup = () => {
+    const onEnded = () => {
       audioRef.current = null;
-      setVoiceState("idle");
+      if (mountedRef.current) setVoiceState("idle");
     };
-    audio.addEventListener("ended", cleanup);
-    audio.addEventListener("error", () => {
-      cleanup();
-      toast.error("音声の再生に失敗しました");
-    });
+    const onError = () => {
+      audioRef.current = null;
+      if (mountedRef.current) {
+        setVoiceState("idle");
+        toast.error("音声の再生に失敗しました");
+      }
+    };
+    audio.addEventListener("ended", onEnded);
+    audio.addEventListener("error", onError);
 
     setVoiceState("playing");
     audio.play().catch(() => {
-      cleanup();
-      toast.error("音声の再生に失敗しました");
+      audioRef.current = null;
+      if (mountedRef.current) {
+        setVoiceState("idle");
+        toast.error("音声の再生に失敗しました");
+      }
     });
   };
 
