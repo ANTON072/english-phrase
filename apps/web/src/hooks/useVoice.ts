@@ -4,7 +4,16 @@ import { SPEECH_ENDPOINT } from "@/constants";
 
 type VoiceState = "idle" | "loading" | "playing";
 
+// phraseId をキーに Blob URL をメモリキャッシュする。
+// ページ滞在中は同じフレーズの API 通信を1回に抑える。
+const speechCache = new Map<number, string>();
+
+// API から音声の Blob URL を取得する。キャッシュがあればそちらを返す。
+// 取得した URL は revoke しないことでキャッシュを有効に保つ。
 async function fetchSpeechUrl(phraseId: number, word: string): Promise<string> {
+  if (speechCache.has(phraseId)) {
+    return speechCache.get(phraseId)!;
+  }
   const res = await fetch(SPEECH_ENDPOINT, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -12,7 +21,9 @@ async function fetchSpeechUrl(phraseId: number, word: string): Promise<string> {
   });
   if (!res.ok) throw new Error("音声の取得に失敗しました");
   const blob = await res.blob();
-  return URL.createObjectURL(blob);
+  const url = URL.createObjectURL(blob);
+  speechCache.set(phraseId, url);
+  return url;
 }
 
 export function useVoice(phraseId: number, word: string) {
@@ -20,6 +31,7 @@ export function useVoice(phraseId: number, word: string) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const play = async () => {
+    // 再生中・ロード中は二重実行しない
     if (voiceState !== "idle") return;
     setVoiceState("loading");
 
@@ -36,7 +48,6 @@ export function useVoice(phraseId: number, word: string) {
     audioRef.current = audio;
 
     const cleanup = () => {
-      URL.revokeObjectURL(url);
       audioRef.current = null;
       setVoiceState("idle");
     };
