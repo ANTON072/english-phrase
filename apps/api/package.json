@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@english-phrase/db": "workspace:*",
+    "@english-phrase/types": "workspace:*",
     "drizzle-orm": "catalog:",
     "hono": "^4.0.0"
   },

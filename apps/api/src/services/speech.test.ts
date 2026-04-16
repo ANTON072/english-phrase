@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildCacheKey, textHash } from "./speech-cache";
+import { buildCacheKey, textHash } from "./speech";
 
 describe("textHash", () => {
   it("同じテキストは同じハッシュを返す", async () => {
