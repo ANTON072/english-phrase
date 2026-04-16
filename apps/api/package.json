@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev --port 8787",
-    "deploy": "wrangler deploy --env production"
+    "deploy": "wrangler deploy --env production",
+    "test": "vitest run"
   },
   "dependencies": {
     "@english-phrase/db": "workspace:*",
@@ -13,6 +14,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.0.0",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "^3.0.0"
   }
 }

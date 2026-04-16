@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { buildCacheKey, MODEL, textHash, VOICE } from "../speech-cache";
 
 type Bindings = {
   OPENAI_API_KEY: string;
@@ -6,8 +7,6 @@ type Bindings = {
 };
 
 const OPENAI_TTS_URL = "https://api.openai.com/v1/audio/speech";
-const MODEL = "gpt-4o-mini-tts";
-const VOICE = "coral";
 const MAX_TEXT_LENGTH = 500;
 
 export const speechRoute = new Hono<{ Bindings: Bindings }>();
@@ -36,6 +35,20 @@ speechRoute.post("/speech", async (c) => {
     return c.json({ error: `text must be ${MAX_TEXT_LENGTH} characters or less` }, 400);
   }
 
+  const hash = await textHash(body.text);
+  const key = buildCacheKey(body.phraseId, hash);
+
+  // R2にキャッシュ済みのmp3があればOpenAIを呼ばずに返す
+  const cached = await c.env.VOICE_CACHE.get(key);
+  if (cached !== null) {
+    return new Response(cached.body, {
+      headers: {
+        "Content-Type": "audio/mpeg",
+      },
+    });
+  }
+
+  // キャッシュなし: OpenAI TTS APIで音声を生成する
   let openaiRes: Response;
   try {
     openaiRes = await fetch(OPENAI_TTS_URL, {
@@ -61,6 +74,11 @@ speechRoute.post("/speech", async (c) => {
   }
 
   const mp3 = await openaiRes.arrayBuffer();
+
+  // 生成したmp3をR2に保存して次回以降キャッシュから返せるようにする
+  await c.env.VOICE_CACHE.put(key, mp3, {
+    httpMetadata: { contentType: "audio/mpeg" },
+  });
 
   return new Response(mp3, {
     headers: {
