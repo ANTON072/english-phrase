@@ -52,7 +52,7 @@ english-phrase/
 ├── apps/
 │   ├── sync/             # Phase 1: Notion → D1 同期 CLI
 │   ├── api/              # Phase 2: Cloudflare Workers API
-│   └── web/              # Phase 3: Web フロントエンド (stub)
+│   └── web/              # Phase 3: Web フロントエンド
 └── docs/                 # 設計ドキュメント
 ```
 
