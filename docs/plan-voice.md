@@ -21,16 +21,20 @@
 
 ## Phase 1: API側に音声生成エンドポイントを追加
 
+状態: 完了
+
 目的: `word` を渡すとmp3が返るAPIを作る。
 
-やること:
+やったこと:
 
-- `POST /api/v1/speech` を追加する。
+- `apps/api/src/routes/speech.ts` を新規作成した。
+- `POST /api/v1/speech` を追加した。
 - リクエストで `phraseId` と `text` を受け取る。
 - `text` は `word` のみを想定する。
-- 空文字・長すぎる文字列をバリデーションする。
-- OpenAI `POST /v1/audio/speech` を呼び出す。
+- 空文字・500文字超えをバリデーションする。
+- OpenAI `POST /v1/audio/speech` を呼び出す（モデル: `gpt-4o-mini-tts`、ボイス: `coral`）。
 - `audio/mpeg` でmp3を返す。
+- `apps/api/src/index.ts` に `OPENAI_API_KEY` / `VOICE_CACHE` を Bindings に追加し、ルートを登録した。
 
 完了条件:
 
