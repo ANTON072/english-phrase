@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "dev": "concurrently --kill-others -n DB,API,WEB -c green,cyan,magenta \"pnpm db:studio\" \"pnpm api:dev\" \"pnpm web:dev\"",
