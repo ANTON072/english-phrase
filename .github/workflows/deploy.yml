@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.19'        # engines: >=20.19.0 に合わせて明示
+          node-version: '24.15.0'       # engines: >=24.0.0 に合わせて明示
           cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile
