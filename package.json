@@ -21,6 +21,7 @@
     "web:dev": "pnpm --filter web run dev",
     "web:build": "pnpm --filter web run build",
     "web:deploy": "pnpm --filter web run deploy",
+    "storybook": "pnpm --filter web run storybook",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write ."
