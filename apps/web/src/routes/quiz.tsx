@@ -48,15 +48,23 @@ function QuizPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col px-6 py-8">
-      <header className="flex items-center justify-between border-b border-border pb-4">
+    <main className="flex h-svh flex-col overflow-hidden">
+      <header className="flex items-center justify-between border-b border-border px-6 py-4">
         <span className="text-sm font-medium text-muted-foreground">Count: {count}</span>
       </header>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-8">
-        {loading && <LoadingSpinner />}
+      <div className="flex flex-1 flex-col">
+        {loading && (
+          <div className="flex flex-1 items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        )}
 
-        {!loading && error && <ErrorMessage message={error} onRetry={load} />}
+        {!loading && error && (
+          <div className="flex flex-1 items-center justify-center">
+            <ErrorMessage message={error} onRetry={load} />
+          </div>
+        )}
 
         {!loading && !error && phrase && (
           <QuizCard

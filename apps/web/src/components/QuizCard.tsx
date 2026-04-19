@@ -1,6 +1,5 @@
 import type { PhraseResponse } from "@english-phrase/types";
-import { AnswerCard } from "@/components/AnswerCard";
-import { QuestionCard } from "@/components/QuestionCard";
+import { PhraseCard } from "@/components/PhraseCard";
 import type { PageState } from "@/types";
 
 type Props = {
@@ -12,9 +11,13 @@ type Props = {
 };
 
 export function QuizCard({ phrase, pageState, onAnswer, onNext, onFinish }: Props) {
-  if (pageState === "question") {
-    return <QuestionCard phrase={phrase} onAnswer={onAnswer} />;
-  }
-
-  return <AnswerCard phrase={phrase} onNext={onNext} onFinish={onFinish} />;
+  return (
+    <PhraseCard
+      phrase={phrase}
+      showAnswer={pageState === "answer"}
+      onAnswer={onAnswer}
+      onNext={onNext}
+      onFinish={onFinish}
+    />
+  );
 }
