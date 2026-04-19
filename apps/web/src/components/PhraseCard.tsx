@@ -19,53 +19,52 @@ export function PhraseCard({ phrase, showAnswer, onAnswer, onNext, onFinish }: P
   const examples = phrase.example ? phrase.example.split("\n") : [];
 
   return (
-    <div className="flex flex-col min-h-screen pt-safe pb-safe">
-      <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6 text-center">
-        <div className="flex items-center gap-3">
+    <div className="flex flex-1 flex-col pt-safe pb-safe">
+      <div className="flex flex-1 flex-col items-center justify-center gap-6 overflow-y-auto px-6 py-6 text-center">
+        <div className="flex flex-col items-center gap-3">
           <h2 className="text-5xl font-bold tracking-tight text-foreground">{phrase.word}</h2>
           <Button
             variant="ghost"
-            size="icon"
+            size="sm"
             onClick={play}
             disabled={voiceState !== "idle"}
             aria-label="Play pronunciation"
+            className="gap-1.5 text-muted-foreground"
           >
             {voiceState === "loading" ? (
-              <Loader2 className="animate-spin" />
+              <Loader2 className="size-4 animate-spin" />
             ) : (
-              <Volume2 className={voiceState === "playing" ? "text-primary" : ""} />
+              <Volume2 className={`size-4 ${voiceState === "playing" ? "text-primary" : ""}`} />
             )}
           </Button>
         </div>
 
-        {showAnswer && (
-          <div className="flex flex-col items-center gap-3">
-            {partOfSpeeches.length > 0 && (
-              <div className="flex gap-2">
-                {partOfSpeeches.map((pos) => (
-                  <Badge key={pos} variant="secondary">
-                    {pos}
-                  </Badge>
-                ))}
-              </div>
-            )}
-            {phrase.meaning && (
-              <p className="text-2xl font-medium text-foreground">{phrase.meaning}</p>
-            )}
-            {examples.length > 0 && (
-              <ol className="mt-2 text-left">
-                {examples.map((ex, i) => (
-                  <li
-                    key={ex}
-                    className={`text-base text-muted-foreground italic py-2 ${i < examples.length - 1 ? "border-b border-border" : ""}`}
-                  >
-                    {ex}
-                  </li>
-                ))}
-              </ol>
-            )}
-          </div>
-        )}
+        <div className="flex flex-col items-center gap-3">
+          {partOfSpeeches.length > 0 && (
+            <div className="flex gap-2">
+              {partOfSpeeches.map((pos) => (
+                <Badge key={pos} variant="secondary">
+                  {pos}
+                </Badge>
+              ))}
+            </div>
+          )}
+          {showAnswer && phrase.meaning && (
+            <p className="text-2xl font-medium text-foreground">{phrase.meaning}</p>
+          )}
+          {showAnswer && examples.length > 0 && (
+            <ol className="mt-2 text-left">
+              {examples.map((ex, i) => (
+                <li
+                  key={ex}
+                  className={`text-base text-muted-foreground italic py-2 ${i < examples.length - 1 ? "border-b border-border" : ""}`}
+                >
+                  {ex}
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
       </div>
 
       <div className="flex w-full gap-3 px-6 pb-6">

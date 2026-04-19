@@ -48,7 +48,7 @@ function QuizPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col">
+    <main className="flex h-svh flex-col overflow-hidden">
       <header className="flex items-center justify-between border-b border-border px-6 py-4">
         <span className="text-sm font-medium text-muted-foreground">Count: {count}</span>
       </header>

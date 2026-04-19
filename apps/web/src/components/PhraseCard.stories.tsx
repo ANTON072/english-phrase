@@ -17,6 +17,14 @@ const basePhrase: PhraseResponse = {
 const meta = {
   title: "Components/PhraseCard",
   component: PhraseCard,
+  parameters: { layout: "fullscreen" },
+  decorators: [
+    (Story) => (
+      <div className="flex h-svh flex-col overflow-hidden">
+        <Story />
+      </div>
+    ),
+  ],
   args: { onAnswer: fn(), onNext: fn(), onFinish: fn() },
 } satisfies Meta<typeof PhraseCard>;
 
