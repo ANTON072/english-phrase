@@ -21,9 +21,9 @@ export function QuizCard({ phrase, pageState, onAnswer, onNext, onFinish }: Prop
   const showAnswer = pageState === "answer";
 
   return (
-    <div className="flex flex-1 flex-col pt-safe pb-safe">
-      <div className="flex flex-1 flex-col items-center justify-center gap-6 overflow-y-auto px-6 py-6 text-center">
-        <div className="flex flex-col items-center gap-3">
+    <div className="grid grid-rows-[1fr_auto] pt-safe pb-safe">
+      <div className="grid place-content-center place-items-center gap-6 overflow-y-auto px-6 py-6 text-center">
+        <div className="grid place-items-center gap-3">
           <h2 className="text-5xl font-bold tracking-tight text-foreground">{phrase.word}</h2>
           <Button
             variant="ghost"
@@ -41,9 +41,9 @@ export function QuizCard({ phrase, pageState, onAnswer, onNext, onFinish }: Prop
           </Button>
         </div>
 
-        <div className="flex flex-col items-center gap-3">
+        <div className="grid place-items-center gap-3">
           {partOfSpeeches.length > 0 && (
-            <div className="flex gap-2">
+            <div className="grid grid-flow-col gap-2">
               {partOfSpeeches.map((pos) => (
                 <Badge key={pos} variant="secondary">
                   {pos}
@@ -69,23 +69,18 @@ export function QuizCard({ phrase, pageState, onAnswer, onNext, onFinish }: Prop
         </div>
       </div>
 
-      <div className="flex w-full gap-3 px-6 pb-6">
+      <div className="grid grid-cols-2 gap-3 px-6 pb-6">
         {showAnswer ? (
           <>
-            <Button
-              size="lg"
-              variant="outline"
-              className="flex-1 h-14 text-base"
-              onClick={onFinish}
-            >
+            <Button size="lg" variant="outline" className="h-14 text-base" onClick={onFinish}>
               Finish
             </Button>
-            <Button size="lg" className="flex-1 h-14 text-base" onClick={onNext}>
+            <Button size="lg" className="h-14 text-base" onClick={onNext}>
               Next
             </Button>
           </>
         ) : (
-          <Button size="lg" className="w-full h-14 text-base" onClick={onAnswer}>
+          <Button size="lg" className="col-span-2 h-14 text-base" onClick={onAnswer}>
             Answer
           </Button>
         )}
