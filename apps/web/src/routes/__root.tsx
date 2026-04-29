@@ -12,7 +12,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootLayout() {
   return (
-    <div className="min-h-screen bg-background font-sans antialiased">
+    <div className="bg-background font-sans antialiased">
       <Outlet />
       <Toaster position="bottom-center" />
     </div>

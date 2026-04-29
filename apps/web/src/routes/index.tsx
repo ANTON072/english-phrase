@@ -15,16 +15,14 @@ function HomePage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6">
-      <div className="flex flex-col items-center gap-10">
-        <div className="flex flex-col items-center gap-3">
-          <h1 className="text-4xl font-bold tracking-tight text-primary">English Phrase</h1>
-          <p className="text-lg text-muted-foreground">Let's get started!</p>
-        </div>
-        <Button size="lg" className="w-40 text-base" onClick={handleStart}>
-          Start
-        </Button>
+    <main className="h-svh grid place-content-center place-items-center gap-10 px-6">
+      <div className="grid gap-3 place-items-center">
+        <h1 className="text-4xl font-bold tracking-tight text-primary">English Phrase</h1>
+        <p className="text-lg text-muted-foreground">Let's get started!</p>
       </div>
+      <Button size="lg" className="w-40 text-base" onClick={handleStart}>
+        Start
+      </Button>
     </main>
   );
 }

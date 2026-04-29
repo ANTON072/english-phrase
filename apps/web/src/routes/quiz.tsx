@@ -1,8 +1,9 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ErrorMessage } from "@/components/ErrorMessage";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { QuizCard } from "@/components/QuizCard";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { usePhrase } from "@/hooks/usePhrase";
 import { addReviewed, isStarted, type PhraseRecord } from "@/lib/session";
 import type { PageState } from "@/types";
@@ -48,34 +49,36 @@ function QuizPage() {
   }
 
   return (
-    <main className="flex h-svh flex-col overflow-hidden">
-      <header className="flex items-center justify-between border-b border-border px-6 py-4">
+    <main className="grid h-svh grid-rows-[auto_1fr]">
+      <header className="grid grid-cols-[1fr_auto] items-center border-b border-border px-4 py-2">
         <span className="text-sm font-medium text-muted-foreground">Count: {count}</span>
+        <Button variant="ghost" size="sm" onClick={handleFinish}>
+          Finish
+        </Button>
       </header>
 
-      <div className="flex flex-1 flex-col">
-        {loading && (
-          <div className="flex flex-1 items-center justify-center">
-            <LoadingSpinner />
-          </div>
-        )}
+      {loading && (
+        <div className="grid place-items-center">
+          <Spinner className="size-8" />
+        </div>
+      )}
 
-        {!loading && error && (
-          <div className="flex flex-1 items-center justify-center">
-            <ErrorMessage message={error} onRetry={load} />
-          </div>
-        )}
+      {!loading && error && (
+        <div className="grid place-items-center">
+          <ErrorMessage message={error} onRetry={load} />
+        </div>
+      )}
 
-        {!loading && !error && phrase && (
+      {!loading && !error && phrase && (
+        <div className="grid">
           <QuizCard
             phrase={phrase}
             pageState={pageState}
             onAnswer={handleAnswer}
             onNext={handleNext}
-            onFinish={handleFinish}
           />
-        )}
-      </div>
+        </div>
+      )}
     </main>
   );
 }
