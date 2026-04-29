@@ -2,6 +2,7 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ErrorMessage } from "@/components/ErrorMessage";
 import { QuizCard } from "@/components/QuizCard";
+import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { usePhrase } from "@/hooks/usePhrase";
 import { addReviewed, isStarted, type PhraseRecord } from "@/lib/session";
@@ -49,8 +50,11 @@ function QuizPage() {
 
   return (
     <main className="grid h-svh grid-rows-[auto_1fr]">
-      <header className="grid grid-cols-[1fr_auto] items-center border-b border-border px-6 py-4">
+      <header className="grid grid-cols-[1fr_auto] items-center border-b border-border px-4 py-2">
         <span className="text-sm font-medium text-muted-foreground">Count: {count}</span>
+        <Button variant="ghost" size="sm" onClick={handleFinish}>
+          Finish
+        </Button>
       </header>
 
       {loading && (
@@ -72,7 +76,6 @@ function QuizPage() {
             pageState={pageState}
             onAnswer={handleAnswer}
             onNext={handleNext}
-            onFinish={handleFinish}
           />
         </div>
       )}

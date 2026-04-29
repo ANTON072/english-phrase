@@ -11,10 +11,9 @@ type Props = {
   pageState: PageState;
   onAnswer: () => void;
   onNext: () => void;
-  onFinish: () => void;
 };
 
-export function QuizCard({ phrase, pageState, onAnswer, onNext, onFinish }: Props) {
+export function QuizCard({ phrase, pageState, onAnswer, onNext }: Props) {
   const { voiceState, play } = useVoice(phrase.id, phrase.word);
   const partOfSpeeches = parsePartOfSpeech(phrase.partOfSpeech);
   const examples = phrase.example ? phrase.example.split("\n") : [];
@@ -69,18 +68,13 @@ export function QuizCard({ phrase, pageState, onAnswer, onNext, onFinish }: Prop
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 px-6 pb-6">
+      <div className="grid px-6 pb-6">
         {showAnswer ? (
-          <>
-            <Button size="lg" variant="outline" className="h-14 text-base" onClick={onFinish}>
-              Finish
-            </Button>
-            <Button size="lg" className="h-14 text-base" onClick={onNext}>
-              Next
-            </Button>
-          </>
+          <Button size="lg" className="h-14 text-base" onClick={onNext}>
+            Next
+          </Button>
         ) : (
-          <Button size="lg" className="col-span-2 h-14 text-base" onClick={onAnswer}>
+          <Button size="lg" className="h-14 text-base" onClick={onAnswer}>
             Answer
           </Button>
         )}
