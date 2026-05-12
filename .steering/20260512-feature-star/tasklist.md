@@ -15,10 +15,10 @@
 
 ## フェーズ1: DB スキーマ変更
 
-- [ ] `packages/db/src/schema.ts` に `starred` カラムを追加する
-  - [ ] `starred: int("starred").notNull().default(0)` を `phrases` テーブルに追加
-  - [ ] `Phrase` 型エクスポートに `starred` を含める
-- [ ] `pnpm db:generate` でマイグレーション SQL を生成する
+- [x] `packages/db/src/schema.ts` に `starred` カラムを追加する
+  - [x] `starred: int("starred").notNull().default(0)` を `phrases` テーブルに追加
+  - [x] `Phrase` 型エクスポートに `starred` を含める
+- [x] `pnpm db:generate` でマイグレーション SQL を生成する
 
 ## フェーズ2: 共有型の追加
 
