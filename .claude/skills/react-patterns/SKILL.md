@@ -132,26 +132,6 @@ const processed = useMemo(() => data.map(item => item * 2), [data]);
 
 ---
 
-## eval / with 文を使わない（unsupported-syntax）
-
-`eval` や `with` は React Compiler の静的解析を妨げ、最適化が効かなくなる。セキュリティリスクもある。
-
-```tsx
-// ❌ アンチパターン
-const result = eval(code);
-```
-
-動的プロパティアクセスはブラケット記法で代替できる。
-
-```tsx
-// ✅ ブラケット記法
-const value = props[propName];
-```
-
-参考: https://react.dev/reference/eslint-plugin-react-hooks/lints/unsupported-syntax
-
----
-
 ## フックの依存配列は網羅的に指定する（exhaustive-deps）
 
 `useEffect` / `useMemo` / `useCallback` 内で参照する値はすべて依存配列に含める。
@@ -382,33 +362,9 @@ function Parent() {
 
 ---
 
-## 内部可変性を持つライブラリは useMemo でラップしない（incompatible-library）
-
-`react-hook-form` の `watch` など、参照は同一のまま内部状態だけ変わるオブジェクトを
-`useMemo` に渡しても変更を検知できず UI が更新されない。
-
-```tsx
-// ❌ watch は内部可変 → useMemo でメモ化しても機能しない
-const { watch } = useForm();
-const name = useMemo(() => watch('name'), [watch]);
-```
-
-ライブラリが提供するリアクティブな API（`useWatch` など）を使う。
-
-```tsx
-// ✅ useWatch でリアクティブに購読
-const { control } = useForm();
-const name = useWatch({ control, name: 'name' });
-```
-
-参考: https://react.dev/reference/eslint-plugin-react-hooks/lints/incompatible-library
-
----
-
 ## 手動メモ化の依存配列を完全に保つ（preserve-manual-memoization）
 
 `useMemo` / `useCallback` を使う場合、依存配列が不完全だと古い値を参照し続ける。
-依存配列の管理が難しければ手動メモ化を削除して React Compiler に任せる。
 
 ```tsx
 // ❌ filter が依存配列に含まれていない
@@ -416,42 +372,6 @@ const filtered = useMemo(() => data.filter(filter), [data]);
 
 // ✅ すべての依存を含める
 const filtered = useMemo(() => data.filter(filter), [data, filter]);
-
-// ✅ または手動メモ化を削除（React Compiler が最適化）
-const filtered = data.filter(filter);
 ```
 
 参考: https://react.dev/reference/eslint-plugin-react-hooks/lints/preserve-manual-memoization
-
----
-
-## React Compiler の設定オプションは正確に記述する（config）
-
-オプション名の誤字や不正な値はサイレントに失敗するため注意。
-
-```js
-// ❌ 誤字・不正な値
-{ compileMode: 'all' }        // compilationMode が正しい
-{ compilationMode: 'everything' } // 'all' または 'infer' が正しい
-
-// ✅ 正しい設定
-{ compilationMode: 'infer', panicThreshold: 'critical_errors' }
-```
-
-参考: https://react.dev/reference/eslint-plugin-react-hooks/lints/config
-
----
-
-## React Compiler の gating 設定は必須フィールドを揃える（gating）
-
-段階的な Compiler 採用のための gating を設定する場合は `importSpecifierName` と `source` を両方指定する。
-
-```js
-// ❌ source が欠落
-gating: { importSpecifierName: 'isCompilerEnabled' }
-
-// ✅ 両フィールドを指定
-gating: { importSpecifierName: 'isCompilerEnabled', source: 'featureFlags' }
-```
-
-参考: https://react.dev/reference/eslint-plugin-react-hooks/lints/gating
