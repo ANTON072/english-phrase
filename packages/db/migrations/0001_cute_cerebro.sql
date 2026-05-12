@@ -1,0 +1,1 @@
+ALTER TABLE `phrases` ADD `starred` integer DEFAULT 0 NOT NULL;

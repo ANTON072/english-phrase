@@ -11,6 +11,7 @@ export const phrases = sqliteTable("phrases", {
   exampleTranslation: text("example_translation"),
   notionCreatedAt: text("notion_created_at"),
   syncedAt: text("synced_at").notNull().default(sql`(datetime('now'))`),
+  starred: int("starred").notNull().default(0),
 });
 
 export const syncLogs = sqliteTable("sync_logs", {
@@ -20,7 +21,7 @@ export const syncLogs = sqliteTable("sync_logs", {
 
 export type Phrase = Pick<
   typeof phrases.$inferSelect,
-  "id" | "word" | "meaning" | "partOfSpeech" | "example" | "exampleTranslation" | "notionCreatedAt"
+  "id" | "word" | "meaning" | "partOfSpeech" | "example" | "exampleTranslation" | "notionCreatedAt" | "starred"
 >;
 
 export type NewPhrase = typeof phrases.$inferInsert;

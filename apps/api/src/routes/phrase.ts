@@ -14,13 +14,14 @@ const phraseSelect = {
   example: phrases.example,
   exampleTranslation: phrases.exampleTranslation,
   notionCreatedAt: phrases.notionCreatedAt,
+  starred: phrases.starred,
 };
 
 export const phraseRoute = new Hono<{ Bindings: Bindings }>();
 
 phraseRoute.post("/phrase", async (c) => {
   const db = drizzle(c.env.DB);
-  const result = await db.select(phraseSelect).from(phrases).orderBy(sql`RANDOM()`).limit(1);
+  const result = await db.select(phraseSelect).from(phrases).orderBy(sql`RANDOM() * (CASE WHEN ${phrases.starred} = 1 THEN 0.1 ELSE 1.0 END)`).limit(1);
   if (result.length === 0) return c.json<ErrorResponse>({ error: "No phrases found" }, 404);
   return c.json<PhraseResponse>(result[0]);
 });

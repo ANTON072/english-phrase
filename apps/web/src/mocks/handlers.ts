@@ -1,6 +1,6 @@
 import type { PhraseResponse } from "@english-phrase/types";
 import { HttpResponse, http } from "msw";
-import { API_ENDPOINT } from "@/constants";
+import { API_ENDPOINT, STAR_ENDPOINT } from "@/constants";
 
 const mockPhrases: PhraseResponse[] = [
   {
@@ -13,6 +13,7 @@ const mockPhrases: PhraseResponse[] = [
     exampleTranslation:
       "例文: 1. 食料品店の店員が必要な材料を見つけるのを手伝ってくれました。\n\n2. 電子機器店で購入について店員に助けを求めました。\n\n3. フレンドリーな店員は、入店するすべての顧客に笑顔で挨拶しました。",
     notionCreatedAt: "2026-03-29T14:56:00.000Z",
+    starred: 0,
   },
   {
     id: 366,
@@ -23,6 +24,7 @@ const mockPhrases: PhraseResponse[] = [
       '1. "Certainly, I will help you with your project this weekend."\n2. "She certainly has a talent for painting."\n3. "If you need assistance, I can certainly provide it."\n4. "He certainly made a great impression at the interview."\n5. "We will certainly meet our deadline if we stay on track."',
     exampleTranslation: null,
     notionCreatedAt: "2026-03-30T13:38:00.000Z",
+    starred: 0,
   },
   {
     id: 402,
@@ -33,6 +35,7 @@ const mockPhrases: PhraseResponse[] = [
       "In my neighborhood, there are many parks where children can play and families can gather.",
     exampleTranslation: null,
     notionCreatedAt: "2026-04-02T13:03:00.000Z",
+    starred: 0,
   },
 ];
 
@@ -46,5 +49,8 @@ export const handlers = [
     } while (index === lastIndex && mockPhrases.length > 1);
     lastIndex = index;
     return HttpResponse.json(mockPhrases[index]);
+  }),
+  http.post(STAR_ENDPOINT, () => {
+    return HttpResponse.json({ success: true });
   }),
 ];
