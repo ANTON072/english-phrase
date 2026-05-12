@@ -2,6 +2,7 @@
   "name": "english-phrase",
   "private": true,
   "version": "0.0.0",
+  "packageManager": "pnpm@11.1.0",
   "engines": {
     "node": ">=24.0.0"
   },
@@ -30,12 +31,5 @@
     "@biomejs/biome": "2.4.11",
     "concurrently": "^9.2.1",
     "wrangler": "catalog:"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp",
-      "workerd"
-    ]
   }
 }
