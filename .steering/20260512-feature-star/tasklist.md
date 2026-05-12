@@ -56,14 +56,14 @@
 
 ## フェーズ5: 品質チェックと修正
 
-- [ ] リントエラーがないことを確認する
-  - [ ] `pnpm lint` を実行
-- [ ] 型エラーがないことを確認する
-  - [ ] `pnpm -F @english-phrase/web build` を実行 (tsc -b が走る)
-- [ ] `apps/api` のテストが通ることを確認する
-  - [ ] `pnpm -F @english-phrase/api test` を実行
-- [ ] `apps/sync` のテストが通ることを確認する
-  - [ ] `pnpm -F @english-phrase/sync test` を実行
+- [x] リントエラーがないことを確認する
+  - [x] `pnpm lint` を実行
+- [x] 型エラーがないことを確認する
+  - [x] `pnpm -F @english-phrase/web build` を実行 (tsc -b が走る)
+- [x] `apps/api` のテストが通ることを確認する
+  - [x] `pnpm -F @english-phrase/api test` を実行
+- [x] `apps/sync` のテストが通ることを確認する
+  - [x] `pnpm -F @english-phrase/sync test` を実行
 
 ---
 
@@ -71,24 +71,28 @@
 
 ### 実装完了日
 
-{YYYY-MM-DD}
+2026-05-12
 
 ### 計画と実績の差分
 
 **計画と異なった点**:
 
-- {計画時には想定していなかった技術的な変更点}
+- `pnpm -F @english-phrase/web build` のフィルタ名が実際には `web`（パッケージ名と一致）だったため、コマンドを修正して実行した
+- ORDER BY の重み付きランダムは `RANDOM() * (CASE WHEN starred = 1 THEN 0.1 ELSE 1.0 END)` で計画通り実装
 
 **新たに必要になったタスク**:
 
-- {実装中に追加したタスク}
+- 特になし（計画通り完了）
 
 ### 学んだこと
 
 **技術的な学び**:
 
-- {実装を通じて学んだ技術的な知見}
+- Hono の楽観的更新パターン：ローカル state を先に反転 → API 呼び出し → エラー時ロールバック
+- Drizzle の UPDATE クエリで `.returning()` を使うと影響行数の確認が容易
+- pnpm の `-F` フィルタはパッケージの `name` フィールドと一致させる必要がある
 
 ### 次回への改善提案
 
-- {次回の機能追加で気をつけること}
+- スター済みフレーズのみを表示するフィルタ機能も検討できる
+- ビルドコマンドを tasklist に記載する際はパッケージ名を事前に確認しておく
