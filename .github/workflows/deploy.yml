@@ -26,6 +26,15 @@ jobs:
 
       - run: pnpm web:build
 
+      - name: Sync migration tracking table
+        # phrases テーブルが追跡テーブル外で作成済みの場合に備えて既適用分を記録
+        run: |
+          pnpm --filter api exec wrangler d1 execute english-phrase-db --remote \
+            --command "CREATE TABLE IF NOT EXISTS d1_migrations(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL); INSERT OR IGNORE INTO d1_migrations(name) VALUES ('0000_fluffy_impossible_man.sql');"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
       - name: Apply DB migrations
         run: pnpm --filter api exec wrangler d1 migrations apply english-phrase-db --remote
         env:
