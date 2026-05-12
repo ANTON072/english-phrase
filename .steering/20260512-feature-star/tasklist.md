@@ -22,9 +22,9 @@
 
 ## フェーズ2: 共有型の追加
 
-- [ ] `packages/types/src/phrase.ts` の `PhraseResponse` に `starred: number` を追加する
-- [ ] `packages/types/src/star.ts` を新規作成し `StarRequest` 型を定義する
-- [ ] `packages/types/src/index.ts` から `StarRequest` を re-export する
+- [x] `packages/types/src/phrase.ts` の `PhraseResponse` に `starred: number` を追加する
+- [x] `packages/types/src/star.ts` を新規作成し `StarRequest` 型を定義する
+- [x] `packages/types/src/index.ts` から `StarRequest` を re-export する
 
 ## フェーズ3: API 実装
 

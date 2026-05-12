@@ -6,4 +6,5 @@ export type PhraseResponse = {
   example: string | null;
   exampleTranslation: string | null;
   notionCreatedAt: string | null;
+  starred: number;
 };
