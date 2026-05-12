@@ -62,6 +62,10 @@
 
 **Reactコンポーネント・フックを実装する際は`react-patterns`スキルを参照してください。**
 
+#### GitHub Actionsバージョン管理
+
+**`.github/workflows/`以下のファイルを作成・編集する際は`github-actions-versions`スキルを参照してください。**
+
 ## ディレクトリ構造
 
 ### 永続的ドキュメント(`docs/`)
