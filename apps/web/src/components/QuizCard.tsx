@@ -1,7 +1,8 @@
 import type { PhraseResponse } from "@english-phrase/types";
-import { Loader2, Volume2 } from "lucide-react";
+import { Loader2, Star, Volume2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useStar } from "@/hooks/useStar";
 import { useVoice } from "@/hooks/useVoice";
 import { parsePartOfSpeech } from "@/lib/utils";
 import type { PageState } from "@/types";
@@ -15,6 +16,7 @@ type Props = {
 
 export function QuizCard({ phrase, pageState, onAnswer, onNext }: Props) {
   const { voiceState, play } = useVoice(phrase.id, phrase.word);
+  const { starred, toggle } = useStar(phrase.id, phrase.starred);
   const partOfSpeeches = parsePartOfSpeech(phrase.partOfSpeech);
   const examples = phrase.example ? phrase.example.split("\n") : [];
   const showAnswer = pageState === "answer";
@@ -23,7 +25,18 @@ export function QuizCard({ phrase, pageState, onAnswer, onNext }: Props) {
     <div className="grid grid-rows-[1fr_auto] pt-safe pb-safe">
       <div className="grid place-content-center place-items-center gap-6 overflow-y-auto px-6 py-6 text-center">
         <div className="grid place-items-center gap-3">
-          <h2 className="text-5xl font-bold tracking-tight text-foreground">{phrase.word}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-5xl font-bold tracking-tight text-foreground">{phrase.word}</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggle}
+              aria-label="Toggle star"
+              className="text-yellow-400"
+            >
+              <Star className={`size-5 ${starred === 1 ? "fill-current" : ""}`} />
+            </Button>
+          </div>
           <Button
             variant="ghost"
             size="sm"

@@ -39,20 +39,20 @@
 
 ## フェーズ4: Web 実装
 
-- [ ] `apps/web/src/constants.ts` に `STAR_ENDPOINT` を追加する
-- [ ] `apps/web/src/hooks/useStar.ts` を新規作成する
-  - [ ] 楽観的更新（ローカル state を先に反転）
-  - [ ] `fetch(STAR_ENDPOINT, ...)` で API 呼び出し
-  - [ ] エラー時に starred をロールバックし `toast.error()` を表示
-  - [ ] `phraseId` / `initialStarred` 変更時に state をリセット
-- [ ] `apps/web/src/components/QuizCard.tsx` にスターボタンを追加する
-  - [ ] `lucide-react` の `Star` アイコンを使用
-  - [ ] question / answer 両状態で常に表示する（`pageState` に依存しない）
-  - [ ] スター済みは塗りつぶし (`fill-current`)、未スターは輪郭のみ
-  - [ ] `useStar(phrase.id, phrase.starred)` を呼び出す
-- [ ] `apps/web/src/mocks/handlers.ts` を更新する
-  - [ ] `mockPhrases` に `starred: 0` フィールドを追加
-  - [ ] `STAR_ENDPOINT` の `POST` ハンドラを追加（成功レスポンスを返す）
+- [x] `apps/web/src/constants.ts` に `STAR_ENDPOINT` を追加する
+- [x] `apps/web/src/hooks/useStar.ts` を新規作成する
+  - [x] 楽観的更新（ローカル state を先に反転）
+  - [x] `fetch(STAR_ENDPOINT, ...)` で API 呼び出し
+  - [x] エラー時に starred をロールバックし `toast.error()` を表示
+  - [x] `phraseId` / `initialStarred` 変更時に state をリセット
+- [x] `apps/web/src/components/QuizCard.tsx` にスターボタンを追加する
+  - [x] `lucide-react` の `Star` アイコンを使用
+  - [x] question / answer 両状態で常に表示する（`pageState` に依存しない）
+  - [x] スター済みは塗りつぶし (`fill-current`)、未スターは輪郭のみ
+  - [x] `useStar(phrase.id, phrase.starred)` を呼び出す
+- [x] `apps/web/src/mocks/handlers.ts` を更新する
+  - [x] `mockPhrases` に `starred: 0` フィールドを追加
+  - [x] `STAR_ENDPOINT` の `POST` ハンドラを追加（成功レスポンスを返す）
 
 ## フェーズ5: 品質チェックと修正
 
