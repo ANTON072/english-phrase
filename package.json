@@ -16,7 +16,7 @@
     "db:generate": "pnpm --filter @english-phrase/db run generate",
     "db:studio": "pnpm --filter @english-phrase/db run studio",
     "db:migrate": "node --env-file=.env -e \"require('child_process').execSync('wrangler d1 execute ' + process.env.D1_DB_NAME + ' --remote --file=packages/db/migrations/0000_fluffy_impossible_man.sql', {stdio:'inherit'})\"",
-    "db:migrate:local": "wrangler d1 execute english-phrase-db --local --file=packages/db/migrations/0000_fluffy_impossible_man.sql",
+    "db:migrate:local": "pnpm --filter api exec wrangler d1 migrations apply english-phrase-db --local",
     "api:dev": "pnpm --filter api run dev",
     "api:deploy": "pnpm --filter api run deploy",
     "web:dev": "pnpm --filter web run dev",
