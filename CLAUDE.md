@@ -1,52 +1,130 @@
 # CLAUDE.md
 
-## プロジェクト概要
+## 技術スタック
 
-英語フレーズ学習アプリの pnpm モノレポ。Notion をデータソースとし Cloudflare D1 に同期する。
+- Node.js v24.x
+- TypeScript 5.x
+- パッケージマネージャー: pnpm
 
-- `packages/db` — 共有 Drizzle スキーマ (`@english-phrase/db`)。`phrases` と `sync_logs` テーブルを定義
-- `apps/sync` — Notion → D1 差分同期 CLI (Phase 1、完了)
-- `apps/api` — Cloudflare Workers API (Phase 2、stub)
-- `apps/web` — Web フロントエンド (Phase 3、stub)
+## スペック駆動開発の基本原則
 
-## コマンド
+### 基本フロー
+
+1. **ドキュメント作成**: 永続ドキュメント(`docs/`)で「何を作るか」を定義
+2. **作業計画**: ステアリングファイル(`.steering/`)で「今回何をするか」を計画
+3. **実装**: tasklist.mdに従って実装し、進捗を随時更新
+4. **検証**: テストと動作確認
+5. **更新**: 必要に応じてドキュメント更新
+
+### 重要なルール
+
+#### ドキュメント作成時
+
+**1ファイルずつ作成し、必ずユーザーの承認を得てから次に進む**
+
+承認待ちの際は、明確に伝える:
+
+```
+「[ドキュメント名]の作成が完了しました。内容を確認してください。
+承認いただけたら次のドキュメントに進みます。」
+```
+
+#### 実装前の確認
+
+新しい実装を始める前に、必ず以下を確認:
+
+1. CLAUDE.mdを読む
+2. 関連する永続ドキュメント(`docs/`)を読む
+3. Grepで既存の類似実装を検索
+4. 既存パターンを理解してから実装開始
+
+#### ステアリングファイル管理
+
+作業ごとに `.steering/[YYYYMMDD]-[タスク名]/` を作成:
+
+- `requirements.md`: 今回の要求内容
+- `design.md`: 実装アプローチ
+- `tasklist.md`: 具体的なタスクリスト
+
+命名規則: `20250115-add-user-profile` 形式
+
+#### ステアリングファイルの管理
+
+**作業計画・実装・検証時は`steering`スキルを使用してください。**
+
+- **作業計画時**: `Skill('steering')`でモード1(ステアリングファイル作成)
+- **実装時**: `Skill('steering')`でモード2(実装とtasklist.md更新管理)
+- **検証時**: `Skill('steering')`でモード3(振り返り)
+
+詳細な手順と更新管理のルールはsteeringスキル内に定義されています。
+
+## ディレクトリ構造
+
+### 永続的ドキュメント(`docs/`)
+
+アプリケーション全体の「何を作るか」「どう作るか」を定義:
+
+#### 下書き・アイデア（`docs/ideas/`）
+
+- 壁打ち・ブレインストーミングの成果物
+- 技術調査メモ
+- 自由形式（構造化は最小限）
+- `/setup-project`実行時に自動的に読み込まれる
+
+#### 正式版ドキュメント
+
+- **product-requirements.md** - プロダクト要求定義書
+- **functional-design.md** - 機能設計書
+- **architecture.md** - 技術仕様書
+- **repository-structure.md** - リポジトリ構造定義書
+- **development-guidelines.md** - 開発ガイドライン
+- **glossary.md** - ユビキタス言語定義
+
+### 作業単位のドキュメント(`.steering/`)
+
+特定の開発作業における「今回何をするか」を定義:
+
+- `requirements.md`: 今回の作業の要求内容
+- `design.md`: 変更内容の設計
+- `tasklist.md`: タスクリスト
+
+## 開発プロセス
+
+### 初回セットアップ
+
+1. このテンプレートを使用
+2. `/setup-project` で永続的ドキュメント作成(対話的に6つ作成)
+3. `/add-feature [機能]` で機能実装
+
+### 日常的な使い方
+
+**基本は普通に会話で依頼してください:**
 
 ```bash
-pnpm sync         # Notion → D1 同期実行
-pnpm test         # Vitest でテスト実行
-pnpm db:generate  # スキーマ変更からマイグレーション SQL 生成
-pnpm db:studio    # Drizzle Studio 起動
-pnpm db:migrate   # wrangler でマイグレーション適用
+# ドキュメントの編集
+> PRDに新機能を追加してください
+> architecture.mdのパフォーマンス要件を見直して
+> glossary.mdに新しいドメイン用語を追加
+
+# 機能追加(定型フローはコマンド)
+> /add-feature ユーザープロフィール編集
+
+# 詳細レビュー(詳細なレポートが必要なとき)
+> /review-docs docs/product-requirements.md
 ```
 
-## アーキテクチャのポイント
+**ポイント**: スペック駆動開発の詳細を意識する必要はありません。Claude Codeが適切なスキルを判断してロードします。
 
-**差分同期の仕組み**:
-- `sync_logs` テーブルの `synced_at` を境界として保持
-- 初回は全件、2回目以降は `last_edited_time > boundary` のみ取得
-- D1 書き込み成功後のみ boundary を更新 (リトライ安全)
+## ドキュメント管理の原則
 
-**SQL 生成と実行**:
-- UPSERT SQL を一時ファイル (`output.sql`) に生成
-- `wrangler d1 execute --file` で D1 に適用
-- `output.sql` は `.gitignore` 済み (平文 SQL に値が含まれるため)
+### 永続的ドキュメント(`docs/`)
 
-**SQL エスケープ**:
-- `apps/sync/src/escape.ts` の `esc()` 関数を使用
-- `null/undefined` → `NULL`、シングルクォートは二重化してラップ
+- 基本設計を記述
+- 頻繁に更新されない
+- プロジェクト全体の「北極星」
 
-**スキーマ管理**:
-- `packages/db/src/schema.ts` が唯一の定義元
-- 変更後は `pnpm db:generate` でマイグレーション SQL を生成してから apply
+### 作業単位のドキュメント(`.steering/`)
 
-## 環境変数
-
-`apps/sync/.env` が必要 (`.env.example` を参照):
-
-```
-NOTION_API_KEY, NOTION_DATABASE_ID
-CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID
-CF_D1_DATABASE_ID, D1_DB_NAME
-```
-
-Drizzle (`drizzle.config.ts`) は `CLOUDFLARE_ACCOUNT_ID`、`CF_D1_DATABASE_ID`、`CLOUDFLARE_API_TOKEN` を使用。
+- 特定の作業に特化
+- 作業ごとに新規作成
+- 履歴として保持
