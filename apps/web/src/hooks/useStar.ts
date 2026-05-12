@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { STAR_ENDPOINT } from "@/constants";
 
 export function useStar(phraseId: number, initialStarred: number) {
+  const [prevPhraseId, setPrevPhraseId] = useState(phraseId);
   const [starred, setStarred] = useState(initialStarred);
 
-  useEffect(() => {
+  if (prevPhraseId !== phraseId) {
+    setPrevPhraseId(phraseId);
     setStarred(initialStarred);
-  }, [phraseId, initialStarred]);
+  }
 
   const toggle = async () => {
     const next = starred === 1 ? 0 : 1;
