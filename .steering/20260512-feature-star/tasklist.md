@@ -28,14 +28,14 @@
 
 ## フェーズ3: API 実装
 
-- [ ] `apps/api/src/routes/phrase.ts` を更新する
-  - [ ] `phraseSelect` に `starred: phrases.starred` を追加する
-  - [ ] `ORDER BY` を重み付きランダム (`RANDOM() * (CASE WHEN starred = 1 THEN 0.1 ELSE 1.0 END)`) に変更する
-- [ ] `apps/api/src/routes/star.ts` を新規作成する
-  - [ ] `parseBody` でリクエストバリデーション (`phraseId: number`, `starred: boolean`)
-  - [ ] Drizzle で `phrases.starred` を UPDATE する
-  - [ ] 対象フレーズが存在しない場合は 404 を返す
-- [ ] `apps/api/src/index.ts` に `starRoute` を登録する
+- [x] `apps/api/src/routes/phrase.ts` を更新する
+  - [x] `phraseSelect` に `starred: phrases.starred` を追加する
+  - [x] `ORDER BY` を重み付きランダム (`RANDOM() * (CASE WHEN starred = 1 THEN 0.1 ELSE 1.0 END)`) に変更する
+- [x] `apps/api/src/routes/star.ts` を新規作成する
+  - [x] `parseBody` でリクエストバリデーション (`phraseId: number`, `starred: boolean`)
+  - [x] Drizzle で `phrases.starred` を UPDATE する
+  - [x] 対象フレーズが存在しない場合は 404 を返す
+- [x] `apps/api/src/index.ts` に `starRoute` を登録する
 
 ## フェーズ4: Web 実装
 
